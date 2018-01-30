@@ -1,7 +1,7 @@
 
 # request-compose
 
-[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls] [![codecov-status]][codecov]
+[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
 
 > _Composable HTTP Client_
 
