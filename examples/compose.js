@@ -16,9 +16,10 @@ var request = compose(
   }),
   async (res) => await new Promise((resolve, reject) => {
     var body = ''
-    res.on('data', (chunk) => body += chunk)
-    res.on('end', () => resolve({res, body}))
-    res.on('error', reject)
+    res
+      .on('data', (chunk) => body += chunk)
+      .on('end', () => resolve({res, body}))
+      .on('error', reject)
   }),
   ({res, body}) => ({res, body: JSON.parse(body)}),
 )
