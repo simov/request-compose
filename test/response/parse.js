@@ -9,20 +9,21 @@ var Response = {
 
 describe('parse', () => {
 
-  it('skip on missing content-type header', () => {
+  it('non matching content-type header', () => {
     t.deepStrictEqual(
       Response.parse({
         res: {headers: {}},
+        body: 'hey',
       }),
       {
         res: {headers: {}},
-        body: undefined
+        body: 'hey',
       },
-      'should return the input arguments'
+      'should return the input body as it is'
     )
   })
 
-  it('parse JSON', () => {
+  it('parse JSON - application/json', () => {
     t.deepStrictEqual(
       Response.parse({
         res: {headers: {'content-type': 'application/json'}},
@@ -30,13 +31,41 @@ describe('parse', () => {
       }),
       {
         res: {headers: {'content-type': 'application/json'}},
-        body: {a: 1, b: 2}
+        body: {a: 1, b: 2},
       },
-      'should parse JSON response'
+      'should parse application/json response'
     )
   })
 
-  it('parse form', () => {
+  it('parse JSON - application/javascript', () => {
+    t.deepStrictEqual(
+      Response.parse({
+        res: {headers: {'content-type': 'application/javascript'}},
+        body: JSON.stringify({a: 1, b: 2}),
+      }),
+      {
+        res: {headers: {'content-type': 'application/javascript'}},
+        body: {a: 1, b: 2},
+      },
+      'should parse application/javascript response'
+    )
+  })
+
+  it('parse JSON - error', () => {
+    t.deepStrictEqual(
+      Response.parse({
+        res: {headers: {'content-type': 'application/json'}},
+        body: 'hey',
+      }),
+      {
+        res: {headers: {'content-type': 'application/json'}},
+        body: 'hey',
+      },
+      'should return the input body as it is'
+    )
+  })
+
+  it('parse form - application/x-www-form-urlencoded', () => {
     t.deepEqual(
       Response.parse({
         res: {headers: {'content-type': 'application/x-www-form-urlencoded'}},
@@ -44,9 +73,9 @@ describe('parse', () => {
       }),
       {
         res: {headers: {'content-type': 'application/x-www-form-urlencoded'}},
-        body: {a: 1, b: 2}
+        body: {a: 1, b: 2},
       },
-      'should parse form encoded response'
+      'should parse application/x-www-form-urlencoded response'
     )
   })
 
