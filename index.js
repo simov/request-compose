@@ -20,6 +20,7 @@ var Request = load('request', [
 
 var Response = load('response', [
   'buffer',
+  'status',
   'parse',
 ])
 
@@ -30,6 +31,9 @@ var client = (args) => compose(
 
   (() =>
     args.url ? Request.url(args.url) : ({options}) => ({options})
+  )(),
+  (() =>
+    args.qs ? Request.qs(args.qs) : ({options}) => ({options})
   )(),
 
   (() =>
@@ -45,6 +49,7 @@ var client = (args) => compose(
   Request.send(),
 
   Response.buffer(),
+  Response.status(),
   Response.parse(),
 
 )()
