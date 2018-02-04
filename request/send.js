@@ -4,9 +4,18 @@ var https = require('https')
 
 
 module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
-  (/https/.test(options.protocol) ? https : http)
-  .request(options)
-    .on('response', (res) => resolve({res}))
-    .on('error', reject)
-    .end(body)
+
+  var req =
+    (/https/.test(options.protocol) ? https : http)
+      .request(options)
+        .on('response', (res) => {
+          process.env.DEBUG && require('request-logs')({res})
+          resolve({res})
+        })
+        .on('error', reject)
+
+  req.end(body)
+
+  process.env.DEBUG && require('request-logs')({req, body, options})
+
 })
