@@ -13,6 +13,7 @@ var Request = load('request', [
   'qs',
   'form',
   'json',
+  'body',
   'length',
   'send',
 ])
