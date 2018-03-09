@@ -24,6 +24,14 @@ describe('form', () => {
     )
   })
 
+  it('filter out undefined keys', () => {
+    t.equal(
+      Request.form({a: 1, b: undefined})({options: {headers: {}}}).body,
+      'a=1',
+      'form object should exclude undefined keys'
+    )
+  })
+
   it('rfc3986', () => {
     t.equal(
       Request.form({rfc3986: '!*()\''})({options: {headers: {}}}).body,

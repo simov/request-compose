@@ -9,7 +9,8 @@ module.exports = (qs) => ({options}) => {
   var [path, query] = options.path.split('?')
   query = querystring.parse(query)
 
-  qs = rfc3986(querystring.stringify(Object.assign(query, qs)))
+  qs = rfc3986(querystring.stringify(
+    JSON.parse(JSON.stringify(Object.assign(query, qs)))))
 
   options.path = path + (qs ? `?${qs}` : '')
   return {options}

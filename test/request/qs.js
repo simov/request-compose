@@ -24,6 +24,14 @@ describe('qs', () => {
     )
   })
 
+  it('filter out undefined keys', () => {
+    t.equal(
+      Request.qs({a: 1, b: undefined})({options: {path: '/'}}).options.path,
+      '/?a=1',
+      'qs object should exclude undefined keys'
+    )
+  })
+
   it('rfc3986', () => {
     t.equal(
       Request.qs({rfc3986: '!*()\''})({options: {path: '/'}}).options.path,

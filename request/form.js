@@ -4,7 +4,8 @@ var querystring = require('querystring')
 
 module.exports = (form) => ({options, options: {headers}}) => {
 
-  form = typeof form === 'object' ? querystring.stringify(form) : (form || '')
+  form = typeof form === 'object' ? querystring.stringify(
+    JSON.parse(JSON.stringify(form))) : (form || '')
 
   var header = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
