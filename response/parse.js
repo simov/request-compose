@@ -7,6 +7,8 @@ module.exports = () => ({res, res: {headers}, body}) => {
   var header = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
 
+  var raw = body
+
   if (/json|javascript/.test(headers[header])) {
     try {
       body = JSON.parse(body)
@@ -23,6 +25,6 @@ module.exports = () => ({res, res: {headers}, body}) => {
 
   process.env.DEBUG && require('request-logs')({json: body})
 
-  return {res, body}
+  return {res, body, raw}
 
 }

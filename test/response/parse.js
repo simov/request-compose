@@ -18,6 +18,7 @@ describe('parse', () => {
       {
         res: {headers: {}},
         body: 'hey',
+        raw: 'hey',
       },
       'should return the input body as it is'
     )
@@ -32,6 +33,7 @@ describe('parse', () => {
       {
         res: {headers: {'content-type': 'application/json'}},
         body: {a: 1, b: 2},
+        raw: '{"a":1,"b":2}',
       },
       'should parse application/json response'
     )
@@ -46,6 +48,7 @@ describe('parse', () => {
       {
         res: {headers: {'content-type': 'application/javascript'}},
         body: {a: 1, b: 2},
+        raw: '{"a":1,"b":2}',
       },
       'should parse application/javascript response'
     )
@@ -60,6 +63,7 @@ describe('parse', () => {
       {
         res: {headers: {'content-type': 'application/json'}},
         body: 'hey',
+        raw: 'hey',
       },
       'should return the input body as it is'
     )
@@ -74,6 +78,7 @@ describe('parse', () => {
       {
         res: {headers: {'content-type': 'application/x-www-form-urlencoded'}},
         body: {a: 1, b: 2},
+        raw: 'a=1&b=2',
       },
       'should parse application/x-www-form-urlencoded response'
     )

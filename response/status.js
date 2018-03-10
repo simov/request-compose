@@ -1,14 +1,18 @@
 
-module.exports = () => ({res, body}) => {
+module.exports = () => ({res, body, raw = body}) => {
 
   if (!/^2/.test(res.statusCode)) {
-    throw new Error([
-      res.statusCode,
-      res.statusMessage,
-      body,
-    ].join(' '))
+    var err = new Error()
+
+    err.message = res.statusCode + ' ' + res.statusMessage
+
+    err.res = res
+    err.body = body
+    err.raw = raw
+
+    throw err
   }
 
-  return {res, body}
+  return {res, body, raw}
 
 }

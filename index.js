@@ -50,8 +50,8 @@ var client = (args) => compose(
   Request.send(),
 
   Response.buffer(),
-  Response.status(),
   Response.parse(),
+  Response.status(),
 
 )()
 
