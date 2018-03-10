@@ -63,7 +63,7 @@ var cases = {
 
 
 var test = (flags) => (done) => {
-  process.env.DEBUG = flags
+  process.env.DEBUG = flags + ',nocolor'
 
   var output = ''
   cp.spawn('node', [
