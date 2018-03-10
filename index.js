@@ -14,6 +14,7 @@ var Request = load('request', [
   'form',
   'json',
   'body',
+  'auth',
   'length',
   'send',
 ])
@@ -42,6 +43,9 @@ var client = (args) => compose(
     args.json ? Request.json(args.json) :
     args.body ? Request.body(args.body) :
     ({options}) => ({options})
+  )(),
+  (() => ({options, body}) =>
+    args.auth ? Request.auth(args.auth)({options, body}) : {options, body}
   )(),
   (() => ({options, body}) =>
     body ? Request.length()({options, body}) : {options}
