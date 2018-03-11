@@ -1,6 +1,6 @@
 
 module.exports = (() =>
-  process.env.SOURCE
+  parseInt(process.version.replace('v', '').split('.')[0]) === 8
     ? require('../compose')
     : require('./compose')
 )()

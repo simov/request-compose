@@ -23,7 +23,7 @@
     "coveralls": "^3.0.0",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "^5.0.0",
-    "request-logs": "0.0.3"
+    "request-logs": "0.0.4"
   },
   "bin": {},
   "main": "./build/index.js",
@@ -39,15 +39,14 @@
   ],
   "scripts": {
     "test": "npm run test:ci",
-    "test:ci": "mocha build/test/ --recursive",
-    "test:cov": "SOURCE=1 istanbul cover _mocha -- --recursive",
-    "build:request": "babel request --out-dir build/request",
-    "build:response": "babel response --out-dir build/response",
-    "build:test": "babel test --out-dir build/test",
-    "build:compose": "babel compose.js --out-file build/compose.js",
-    "build:index": "babel index.js --out-dir build --copy-files",
-    "copy:test/ssl": "babel test/ssl --out-dir build/test/ssl --copy-files",
-    "build": "rm -rf build/ && mkdir -p build && npm run build:request && npm run build:response && npm run build:test && npm run build:compose && npm run copy:test/ssl && npm run build:index",
+    "test:ci": "v=$(node -v | cut -b 2-2) && if [ $v -ge 8 ]; then p=\"test\"; else p=\"build/test\"; fi && mocha $p --recursive",
+    "test:cov": "istanbul cover _mocha -- --recursive",
+    "build:request": "npx babel request --out-dir build/request",
+    "build:response": "npx babel response --out-dir build/response",
+    "build:test": "npx babel test --out-dir build/test",
+    "copy:test/ssl": "npx babel test/ssl --out-dir build/test/ssl --copy-files",
+    "build:main": "npx babel *.js --out-dir build",
+    "build": "rm -rf build/ && mkdir -p build && npm run build:request && npm run build:response && npm run build:test && npm run copy:test/ssl && npm run build:main",
     "prepublish": "npm run build"
   },
   "engines": {
