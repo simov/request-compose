@@ -23,7 +23,7 @@ module.exports = () => ({res, res: {headers}, body}) => {
     catch (err) {}
   }
 
-  process.env.DEBUG && require('request-logs')({json: body})
+  // process.env.DEBUG && require('request-logs')({json: body})
 
   return {res, body, raw}
 

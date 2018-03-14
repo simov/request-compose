@@ -16,6 +16,6 @@ module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
 
   req.end(body)
 
-  process.env.DEBUG && require('request-logs')({req, body, options})
+  // process.env.DEBUG && require('request-logs')({req, body, options})
 
 })

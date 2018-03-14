@@ -90,7 +90,7 @@ var test = (flags) => (done) => {
 }
 
 
-describe('logs', () => {
+describe.skip('logs', () => {
   var server
 
   before((done) => {
