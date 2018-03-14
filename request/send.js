@@ -9,7 +9,7 @@ module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
     (/https/.test(options.protocol) ? https : http)
       .request(options)
         .on('response', (res) => {
-          process.env.DEBUG && require('request-logs')({res})
+          // process.env.DEBUG && require('request-logs')({res})
           resolve({res})
         })
         .on('error', reject)
