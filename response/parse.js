@@ -1,5 +1,6 @@
 
 var querystring = require('querystring')
+var log = require('../log')
 
 
 module.exports = () => ({res, res: {headers}, body}) => {
@@ -23,7 +24,7 @@ module.exports = () => ({res, res: {headers}, body}) => {
     catch (err) {}
   }
 
-  // process.env.DEBUG && require('request-logs')({json: body})
+  log({json: body})
 
   return {res, body, raw}
 

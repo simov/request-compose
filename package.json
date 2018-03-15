@@ -33,6 +33,7 @@
     "response/",
     "compose.js",
     "index.js",
+    "log.js",
     "LICENSE",
     "README.md",
     "package.json"
