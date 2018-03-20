@@ -3,7 +3,7 @@ var querystring = require('querystring')
 var log = require('../utils/log')
 
 
-module.exports = () => ({res, res: {headers}, body}) => {
+module.exports = () => ({options, res, res: {headers}, body}) => {
 
   var header = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
@@ -26,6 +26,6 @@ module.exports = () => ({res, res: {headers}, body}) => {
 
   log({json: body})
 
-  return {res, body, raw}
+  return {options, res, body, raw}
 
 }

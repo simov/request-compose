@@ -16,6 +16,7 @@ describe('parse', () => {
         body: 'hey',
       }),
       {
+        options: undefined,
         res: {headers: {}},
         body: 'hey',
         raw: 'hey',
@@ -31,6 +32,7 @@ describe('parse', () => {
         body: JSON.stringify({a: 1, b: 2}),
       }),
       {
+        options: undefined,
         res: {headers: {'content-type': 'application/json'}},
         body: {a: 1, b: 2},
         raw: '{"a":1,"b":2}',
@@ -46,6 +48,7 @@ describe('parse', () => {
         body: JSON.stringify({a: 1, b: 2}),
       }),
       {
+        options: undefined,
         res: {headers: {'content-type': 'application/javascript'}},
         body: {a: 1, b: 2},
         raw: '{"a":1,"b":2}',
@@ -61,6 +64,7 @@ describe('parse', () => {
         body: 'hey',
       }),
       {
+        options: undefined,
         res: {headers: {'content-type': 'application/json'}},
         body: 'hey',
         raw: 'hey',
@@ -76,6 +80,7 @@ describe('parse', () => {
         body: querystring.stringify({a: 1, b: 2}),
       }),
       {
+        options: undefined,
         res: {headers: {'content-type': 'application/x-www-form-urlencoded'}},
         body: {a: 1, b: 2},
         raw: 'a=1&b=2',

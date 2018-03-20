@@ -11,7 +11,7 @@ module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
       .request(options)
         .on('response', (res) => {
           log({res})
-          resolve({res})
+          resolve({options, res})
         })
         .on('error', reject)
 
