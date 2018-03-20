@@ -22,8 +22,9 @@ var Request = load('request', [
 
 var Response = load('response', [
   'buffer',
-  'status',
   'parse',
+  'status',
+  'redirect',
 ])
 
 
@@ -65,6 +66,23 @@ var client = (args) => compose(
   Response.status(),
 
 )()
+.catch((err) => {
+  if (err.message === 'request-compose: redirect') {
+    if (!args.redirects || args.redirects <= 2) {
+      return client(Object.assign({}, args, {
+        url: err.location,
+        redirects: (args.redirects || 1) + 1,
+      }))
+    }
+    else {
+      err.message = 'request-compose: exceeded maximum redirects'
+      throw err
+    }
+  }
+  else {
+    throw err
+  }
+})
 
 
 compose.client = client
