@@ -4,7 +4,7 @@ var compose = (...fns) => (args) =>
 
 
 var load = (type, middlewares) => middlewares
-  .reduce((obj, mw) => (obj[mw] = require(`./${type}/${mw}`), obj), {})
+  .reduce((all, mw) => (all[mw] = require(`./${type}/${mw}`), all), {})
 
 
 var Request = load('request', [
@@ -25,6 +25,13 @@ var Response = load('response', [
   'status',
   'parse',
 ])
+
+
+var utils = [
+  'error',
+  'log',
+]
+.reduce((all, file) => (all[file] = require(`./utils/${file}`), all), {})
 
 
 var client = (args) => compose(
@@ -63,4 +70,5 @@ var client = (args) => compose(
 compose.client = client
 compose.Request = Request
 compose.Response = Response
+compose.utils = utils
 module.exports = compose

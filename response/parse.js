@@ -1,6 +1,6 @@
 
 var querystring = require('querystring')
-var log = require('../log')
+var log = require('../utils/log')
 
 
 module.exports = () => ({res, res: {headers}, body}) => {

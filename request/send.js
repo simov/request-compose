@@ -1,7 +1,7 @@
 
 var http = require('http')
 var https = require('https')
-var log = require('../log')
+var log = require('../utils/log')
 
 
 module.exports = () => ({options, body}) => new Promise((resolve, reject) => {

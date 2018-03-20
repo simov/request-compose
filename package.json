@@ -31,9 +31,9 @@
     "build/",
     "request/",
     "response/",
+    "utils/",
     "compose.js",
     "index.js",
-    "log.js",
     "LICENSE",
     "README.md",
     "package.json"
@@ -44,10 +44,11 @@
     "test:cov": "istanbul cover _mocha -- --recursive",
     "build:request": "babel request --out-dir build/request",
     "build:response": "babel response --out-dir build/response",
+    "build:utils": "babel utils --out-dir build/utils",
     "build:test": "babel test --out-dir build/test",
     "copy:test/ssl": "babel test/ssl --out-dir build/test/ssl --copy-files",
     "build:main": "babel *.js --out-dir build",
-    "build": "rm -rf build/ && mkdir -p build && npm run build:request && npm run build:response && npm run build:test && npm run copy:test/ssl && npm run build:main",
+    "build": "rm -rf build/ && mkdir -p build && npm run build:request && npm run build:response && npm run build:utils && npm run build:test && npm run copy:test/ssl && npm run build:main",
     "prepublish": "npm run build"
   },
   "engines": {

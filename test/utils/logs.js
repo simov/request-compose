@@ -69,7 +69,7 @@ var test = (flags) => (done) => {
   cp.spawn('node', [
     '-r', '../',
     '-e', `
-      var request = require('../').client
+      var request = require('../../').client
       request({
         method: 'POST',
         url: 'http://localhost:5000',

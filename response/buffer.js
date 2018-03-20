@@ -1,5 +1,5 @@
 
-var log = require('../log')
+var log = require('../utils/log')
 
 
 module.exports = () => ({res}) => new Promise((resolve, reject) => {
