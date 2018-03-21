@@ -1,14 +1,18 @@
 
 var url = require('url')
-var querystring = require('querystring')
 var error = require('../utils/error')
 
 
-module.exports = () => ({options, res, body, raw}) => {
+module.exports = (args, client) => ({options, res, body, raw}) => {
+
+  if (!/^3/.test(res.statusCode)) {
+    // not a redirect
+    return {options, res, body, raw}
+  }
 
   if (/patch|put|post|delete/i.test(options.method)) {
     // do not follow redirects
-    return {res, body, raw}
+    return {options, res, body, raw}
   }
 
   var header = Object.keys(res.headers)
@@ -27,9 +31,16 @@ module.exports = () => ({options, res, body, raw}) => {
     location += `?${query}`
   }
 
-  var err = error({res, body, raw})
-  err.message = 'request-compose: redirect'
-  err.location = location
-  throw err
+  if (!args.redirects || args.redirects <= 2) {
+    return client(Object.assign({}, args, {
+      url: location,
+      redirects: (args.redirects || 1) + 1,
+    }))
+  }
+  else {
+    var err = error({res, body, raw})
+    err.message = 'request-compose: exceeded maximum redirects'
+    throw err
+  }
 
 }

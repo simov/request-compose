@@ -12,28 +12,21 @@ describe('redirect', () => {
     var counter = 0
     server = http.createServer()
     server.on('request', (req, res) => {
-      if (req.url === '/absolute') {
+      var [_, query] = req.url.split('?')
+
+      if (/^\/absolute/.test(req.url)) {
         res.writeHead(301, {location: 'http://localhost:5000/target'})
-        res.end('not ok')
+        res.end(query || 'not ok')
       }
-      else if (req.url === '/relative') {
+      else if (/^\/relative/.test(req.url)) {
         res.writeHead(301, {location: '/target'})
-        res.end('not ok')
+        res.end(query || 'not ok')
       }
-      else if (req.url === '/target') {
-        res.end('ok')
-      }
-      else if (/^\/absolute\?/.test(req.url)) {
-        res.writeHead(301, {location: 'http://localhost:5000/target'})
-        res.end('not ok')
-      }
-      else if (/^\/relative\?/.test(req.url)) {
-        res.writeHead(301, {location: '/target'})
-        res.end('not ok')
-      }
-      else if (/^\/target\?/.test(req.url)) {
-        res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-        res.end(req.url.split('?')[1])
+      else if (/^\/target/.test(req.url)) {
+        res.writeHead(200,
+          query ? {'content-type': 'application/x-www-form-urlencoded'} : {}
+        )
+        res.end(query || 'ok')
       }
       else if (req.url === '/stuck') {
         res.writeHead(301, {location: 'http://localhost:5000/stuck'})
@@ -43,21 +36,24 @@ describe('redirect', () => {
     server.listen(5000, done)
   })
 
-  it('location - absolute URL', async () => {
+  it('do not follow patch|put|post|delete redirects', async () => {
+    var {res, body} = await request({
+      method: 'POST',
+      url: 'http://localhost:5000/absolute'
+    })
+    t.strictEqual(res.statusCode, 301)
+    t.equal(res.statusMessage, 'Moved Permanently')
+    t.equal(body, 'not ok')
+  })
+
+  it('absolute URL', async () => {
     var {body} = await request({
       url: 'http://localhost:5000/absolute'
     })
     t.equal(body, 'ok', 'should follow absolute URLs')
   })
 
-  it('location - relative URL', async () => {
-    var {body} = await request({
-      url: 'http://localhost:5000/relative'
-    })
-    t.equal(body, 'ok', 'should follow relative URLs')
-  })
-
-  it('location - absolute URL + querystring', async () => {
+  it('absolute URL + querystring', async () => {
     var {body} = await request({
       url: 'http://localhost:5000/absolute',
       qs: {a: 1}
@@ -65,7 +61,14 @@ describe('redirect', () => {
     t.deepEqual(body, {a: '1'}, 'should persist URL querystring')
   })
 
-  it('location - relative URL + querystring', async () => {
+  it('relative URL', async () => {
+    var {body} = await request({
+      url: 'http://localhost:5000/relative'
+    })
+    t.equal(body, 'ok', 'should follow relative URLs')
+  })
+
+  it('relative URL + querystring', async () => {
     var {body} = await request({
       url: 'http://localhost:5000/relative',
       qs: {a: 1}
@@ -89,7 +92,7 @@ describe('redirect', () => {
       t.equal(
         err.body,
         '3',
-        'by default maximum 3 redirects are allowed'
+        'by default maximum of 3 redirects are allowed'
       )
       t.deepEqual(
         args,
