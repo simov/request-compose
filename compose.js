@@ -28,11 +28,10 @@ var Response = load('response', [
 ])
 
 
-var utils = [
+var utils = load('utils', [
   'error',
   'log',
-]
-.reduce((all, file) => (all[file] = require(`./utils/${file}`), all), {})
+])
 
 
 var client = (args) => compose(
@@ -72,5 +71,4 @@ var client = (args) => compose(
 compose.client = client
 compose.Request = Request
 compose.Response = Response
-compose.utils = utils
 module.exports = compose
