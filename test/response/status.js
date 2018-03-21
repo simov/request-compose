@@ -1,9 +1,8 @@
 
 var t = require('assert')
-var stream = require('stream')
 
 var Response = {
-  status: require('../../response/status')({method: 'GET'}),
+  status: require('../../response/status')(),
 }
 
 
@@ -12,42 +11,37 @@ describe('status', () => {
   it('200 range', () => {
     t.deepStrictEqual(
       Response.status({
+        options: {},
         res: {statusCode: 200},
         body: 'hey',
+        raw: 'hey',
       }),
       {
-        options: undefined,
+        options: {},
         res: {statusCode: 200},
         body: 'hey',
         raw: 'hey'
       },
-      'should return the input res, body and raw arguments'
+      'should return the input arguments'
     )
   })
 
   it('300 range', () => {
-    try {
+    t.deepStrictEqual(
       Response.status({
-        options: {path: ''},
-        res: {statusCode: 301, statusMessage: 'Moved Permanently', headers: {
-          location: '/path'
-        }},
+        options: {},
+        res: {statusCode: 301},
         body: 'hey',
         raw: 'hey',
-      })
-    }
-    catch (err) {
-      t.equal(
-        err.message,
-        'request-compose: redirect',
-        'special error message should be set while redirecting'
-      )
-      t.equal(
-        err.location,
-        '/path',
-        'location path should be set'
-      )
-    }
+      }),
+      {
+        options: {},
+        res: {statusCode: 301},
+        body: 'hey',
+        raw: 'hey'
+      },
+      'should return the input arguments'
+    )
   })
 
   it('400 range', () => {
@@ -62,7 +56,7 @@ describe('status', () => {
       t.equal(
         err.message,
         '404 Not Found',
-        'should throw an error containing the status code and the status message'
+        'throws an error containing the status code and the status message'
       )
     }
   })
@@ -79,12 +73,12 @@ describe('status', () => {
       t.equal(
         err.message,
         '500 Internal Server Error',
-        'should throw an error containing the status code and the status message'
+        'throws an error containing the status code and the status message'
       )
     }
   })
 
-  it('error properties + raw set implicitly', () => {
+  it('error properties', () => {
     try {
       Response.status({
         res: {statusCode: 404, statusMessage: 'Not Found'},
