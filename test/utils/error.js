@@ -13,9 +13,9 @@ describe('error', () => {
       })
     }
     catch (err) {
-      t.equal(
-        err.message,
-        'Protocol "compose:" not supported. Expected "http:"',
+      t.ok(
+        /^Protocol "compose:" not supported\. Expected "http:"/
+          .test(err.message),
         'should throw error from the underlying node core http module'
       )
     }
