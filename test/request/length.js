@@ -10,11 +10,11 @@ describe('length', () => {
 
   it('set content-length', () => {
     t.deepStrictEqual(
-      Request.length()({options: {headers: {}}, body: 'hey'}).options.headers,
+      Request.length()({options: {headers: {}}, body: 'λ'}).options.headers,
       {
-        'content-length': 3
+        'content-length': 2
       },
-      'content-length should equal 3'
+      'content-length should equal 2'
     )
   })
 

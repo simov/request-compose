@@ -5,7 +5,7 @@ module.exports = () => ({options, options: {headers}, body}) => {
     .find((name) => name.toLowerCase() === 'transfer-encoding')
 
   if (!header || headers[header] !== 'chunked') {
-    headers['content-length'] = body.length
+    headers['content-length'] = Buffer.byteLength(body)
   }
 
   return {options, body}
