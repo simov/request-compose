@@ -51,9 +51,13 @@ var client = (args) => compose(
     args.body ? Request.body(args.body) :
     ({options}) => ({options})
   )(),
-  (() => ({options, body}) =>
-    args.auth ? Request.auth(args.auth)({options, body}) : {options, body}
+
+  (() =>
+    args.auth ? Request.auth(args.auth) :
+    args.oauth ? Request.oauth(args.oauth) :
+    ({options, body}) => ({options, body})
   )(),
+
   (() => ({options, body}) =>
     body ? Request.length()({options, body}) : {options}
   )(),
@@ -63,6 +67,7 @@ var client = (args) => compose(
   Response.buffer(),
   Response.parse(),
   Response.status(),
+
   Response.redirect(args, client),
 
 )()

@@ -23,7 +23,8 @@
     "coveralls": "^3.0.0",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "^5.0.0",
-    "request-logs": "0.0.5"
+    "request-logs": "0.0.5",
+    "request-oauth": "0.0.2"
   },
   "bin": {},
   "main": "./build/index.js",
