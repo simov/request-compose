@@ -29,8 +29,8 @@ describe('error', () => {
       error({res, body, raw}),
       {
         message: '500 Server Error',
-        res: { statusCode: 500, statusMessage: 'Server Error' },
-        body: { error: 'message' },
+        res: {statusCode: 500, statusMessage: 'Server Error'},
+        body: {error: 'message'},
         raw: '{"error":"message"}'
       },
       'request properties should be set'
@@ -44,7 +44,7 @@ describe('error', () => {
       error({res, body}),
       {
         message: '500 Server Error',
-        res: { statusCode: 500, statusMessage: 'Server Error' },
+        res: {statusCode: 500, statusMessage: 'Server Error'},
         body: 'not ok',
         raw: 'not ok'
       },
