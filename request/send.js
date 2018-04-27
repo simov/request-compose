@@ -1,6 +1,7 @@
 
 var http = require('http')
 var https = require('https')
+var stream = require('stream')
 var log = require('../utils/log')
 
 
@@ -15,7 +16,9 @@ module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
         })
         .on('error', reject)
 
-  req.end(body)
+  ;(body instanceof stream.Stream)
+    ? body.pipe(req)
+    : req.end(body)
 
   log({req, body, options})
 

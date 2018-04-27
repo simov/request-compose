@@ -17,7 +17,7 @@ module.exports = () => ({options, res, res: {headers}, body}) => {
     catch (err) {}
   }
 
-  if (/application\/x-www-form-urlencoded/.test(headers[header])) {
+  else if (/application\/x-www-form-urlencoded/.test(headers[header])) {
     try {
       body = querystring.parse(body)
     }

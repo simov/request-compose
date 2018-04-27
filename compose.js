@@ -64,10 +64,10 @@ var client = (args) => compose(
 
   Request.send(),
 
-  Response.buffer(),
+  Response.buffer(args.encoding),
   Response.parse(),
-  Response.status(),
 
+  Response.status(),
   Response.redirect(args, client),
 
 )()

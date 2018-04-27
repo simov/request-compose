@@ -3,7 +3,7 @@ var t = require('assert')
 var stream = require('stream')
 
 var Response = {
-  buffer: require('../../response/buffer')(),
+  buffer: require('../../response/buffer'),
 }
 
 
@@ -19,7 +19,7 @@ describe('buffer', () => {
       res.emit('end')
     }, 0)
 
-    var {body} = await Response.buffer({options, res})
+    var {body} = await Response.buffer()({options, res})
     t.equal(
       body,
       'hey',
@@ -28,7 +28,6 @@ describe('buffer', () => {
   })
 
   it('set specific encoding', async () => {
-    var options = {encoding: 'base64'}
     var res = new stream.Readable()
     res._read = (size) => {/*noop*/}
 
@@ -37,7 +36,7 @@ describe('buffer', () => {
       res.emit('end')
     }, 0)
 
-    var {body} = await Response.buffer({options, res})
+    var {body} = await Response.buffer('base64')({res})
     t.equal(
       body,
       'aGV5',
@@ -46,7 +45,6 @@ describe('buffer', () => {
   })
 
   it('binary data', async () => {
-    var options = {encoding: null}
     var res = new stream.Readable()
     res._read = (size) => {/*noop*/}
 
@@ -56,7 +54,7 @@ describe('buffer', () => {
       res.emit('end')
     }, 0)
 
-    var {body} = await Response.buffer({options, res})
+    var {body} = await Response.buffer(null)({res})
     t.ok(
       input.equals(body),
       'should buffer the response body'
