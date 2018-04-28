@@ -34,7 +34,7 @@ var utils = load('utils', [
 ])
 
 
-var client = (args) => compose(
+var request = (args) => compose(
 
   Request.defaults(args),
 
@@ -64,6 +64,13 @@ var client = (args) => compose(
 
   Request.send(),
 
+)()
+
+
+var client = (args) => compose(
+
+  _ => request(args),
+
   Response.buffer(args.encoding),
   Response.parse(),
 
@@ -73,7 +80,19 @@ var client = (args) => compose(
 )()
 
 
-compose.client = client
+var stream = (args) => compose(
+
+  _ => request(args),
+
+  Response.status(),
+  // TODO: should buffer the read chunks and re-write them
+  // Response.redirect(args, stream),
+
+)()
+
+
 compose.Request = Request
 compose.Response = Response
+compose.client = client
+compose.stream = stream
 module.exports = compose
