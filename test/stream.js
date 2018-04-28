@@ -6,7 +6,6 @@ var http = require('http')
 
 var request = require('../').stream
 var file = {
-  text: path.resolve(__dirname, '../README.md'),
   binary: path.resolve(__dirname, './fixtures/cat.png'),
 }
 

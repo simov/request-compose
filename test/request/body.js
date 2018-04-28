@@ -7,7 +7,7 @@ var stream = require('stream')
 
 var request = require('../../').client
 var file = {
-  text: path.resolve(__dirname, '../../README.md'),
+  text: path.resolve(__dirname, './body.js'),
   binary: path.resolve(__dirname, '../fixtures/cat.png'),
 }
 
