@@ -31,15 +31,16 @@ var Response = compose.Response
 
 # Goals
 
-- No dependencies
-- No abstraction
-- No state
+- **No dependencies**
+- **No abstraction**
+- **No state**
 
 # Table of Contents
 
 - **[Compose](#compose)**
 - **[Middlewares](#middlewares)**
 - **[Client](#client)**
+- **[Examples]**
 
 # Compose
 
@@ -145,6 +146,8 @@ var request = require('request-compose').client
   [travis]: https://travis-ci.org/simov/request-compose
   [coveralls]: https://coveralls.io/github/simov/request-compose
   [codecov]: https://codecov.io/github/simov/request-compose?branch=master
+
+  [examples]: https://github.com/simov/request-compose/blob/master/examples
 
   [pipe-operator]: https://github.com/tc39/proposal-pipeline-operator
   [http-options]: https://nodejs.org/dist/latest-v9.x/docs/api/http.html#http_http_request_options_callback
