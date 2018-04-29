@@ -17,6 +17,7 @@ var Response = compose.Response
       Request.url('https://api.github.com/users/simov'),
       Request.send(),
       Response.buffer(),
+      Response.string(),
       Response.parse(),
     )()
     console.log(res.statusCode, res.statusMessage)
@@ -35,12 +36,17 @@ var Response = compose.Response
 - **No abstraction**
 - **No state**
 
+
 # Table of Contents
 
 - **[Compose](#compose)**
 - **[Middlewares](#middlewares)**
 - **[Client](#client)**
+- **[Buffer](#buffer)**
+- **[Stream](#stream)**
+- **[OAuth](#oauth)**
 - **[Examples]**
+
 
 # Compose
 
@@ -101,6 +107,7 @@ var Response = compose.Response
       Request.url('https://api.github.com/users/simov'),
       Request.send(),
       Response.buffer(),
+      Response.string(),
       Response.parse(),
     )()
     console.log(res.statusCode, res.statusMessage)
@@ -129,6 +136,97 @@ var request = require('request-compose').client
     console.log(res.statusCode, res.statusMessage)
     console.log(res.headers['x-ratelimit-remaining'])
     console.log(body)
+  }
+  catch (err) {
+    console.error(err)
+  }
+})()
+```
+
+# Buffer
+
+```js
+var compose = require('request-compose')
+var iconv = require('iconv-lite')
+
+var request = (options) => compose(
+  _ => compose.buffer(options), // !
+  ({res, body}) => ({res, body: iconv.decode(body, options.encoding)}),
+)()
+
+;(async () => {
+  try {
+    var {body} = await request({
+      url: 'https://raw.githubusercontent.com/simov/markdown-viewer/master/test/encoding/windows-1251.md',
+      encoding: 'windows-1251',
+    })
+    console.log(body)
+  }
+  catch (err) {
+    console.error(err)
+  }
+})()
+```
+
+# Stream
+
+```js
+var compose = require('request-compose')
+compose.Request.oauth = require('request-oauth')
+var request = compose.stream // !
+var json = require('JSONStream')
+
+
+;(async () => {
+  try {
+    var {res} = await request({
+      url: 'https://stream.twitter.com/1.1/statuses/filter.json',
+      qs: {
+        track: 'twitter',
+      },
+      oauth: {
+        consumer_key: '[APP ID]',
+        consumer_secret: '[APP SECRET]',
+        token: '[ACCESS TOKEN]',
+        token_secret: '[ACCESS SECRET]',
+      }
+    })
+    res.pipe(json.parse()).on('data', (data) => {
+      if (data.user) {
+        console.log(data.user.id, data.user.name, data.user.screen_name)
+        console.log(data.id, data.text)
+        console.log('----------------')
+      }
+    })
+  }
+  catch (err) {
+    console.error(err)
+  }
+})()
+```
+
+# OAuth
+
+```js
+var compose = require('request-compose')
+compose.Request.oauth = require('request-oauth')
+var request = compose.client
+
+;(async () => {
+  try {
+    var {body:user} = await request({
+      url: 'https://api.twitter.com/1.1/users/show.json',
+      qs: {
+        screen_name: '[SCREEN NAME]'
+      },
+      oauth: {
+        consumer_key: '[APP ID]',
+        consumer_secret: '[APP SECRET]',
+        token: '[ACCESS TOKEN]',
+        token_secret: '[ACCESS SECRET]',
+      }
+    })
+    console.log(user)
   }
   catch (err) {
     console.error(err)
