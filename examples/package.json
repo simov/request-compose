@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "JSONStream": "^1.3.2",
-    "chalk": "^2.4.1",
     "iconv-lite": "^0.4.21",
     "qs": "^6.5.1",
     "request-oauth": "0.0.2"

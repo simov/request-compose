@@ -2,7 +2,6 @@
 var compose = require('../')
 var request = compose.client
 
-
 var pipe = ({auth, address}) => compose(
   _ => request({
     url: 'https://maps.googleapis.com/maps/api/geocode/json',
@@ -36,23 +35,24 @@ var pipe = ({auth, address}) => compose(
 )()
 
 ;(async () => {
-
   /*
     1. Get the latitude,longitude of a location
     2. Get the weather forecast for that location
     3. Map the weather icons to emoji shortcodes
     4. Update the user's status icon in Slack
   */
-
   var auth = {
     google: '[GOOGLE API KEY]',
     darksky: '[DARKSKY API KEY]',
     slack: '[SLACK ACCESS TOKEN]',
   }
-
   var address = '[LOCATION ADDRESS]'
 
-  await pipe({auth, address})
-  console.log('ᕙ(⇀‸↼‶)ᕗ')
-
+  try {
+    await pipe({auth, address})
+    console.log('ᕙ(⇀‸↼‶)ᕗ')
+  }
+  catch (err) {
+    console.error(err)
+  }
 })()

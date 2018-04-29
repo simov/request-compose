@@ -10,6 +10,7 @@ var Response = compose.Response
       Request.url('https://api.github.com/users/simov'),
       Request.send(),
       Response.buffer(),
+      Response.string(),
       Response.parse(),
     )()
     console.log(res.statusCode, res.statusMessage)
