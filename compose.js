@@ -22,6 +22,7 @@ var Request = load('request', [
 
 var Response = load('response', [
   'buffer',
+  'string',
   'parse',
   'status',
   'redirect',
@@ -71,11 +72,24 @@ var client = (args) => compose(
 
   _ => request(args),
 
-  Response.buffer(args.encoding),
+  Response.buffer(),
+  Response.string(args.encoding),
   Response.parse(),
 
   Response.status(),
   Response.redirect(args, client),
+
+)()
+
+
+var buffer = (args) => compose(
+
+  _ => request(args),
+
+  Response.buffer(),
+
+  Response.status(),
+  Response.redirect(args, buffer),
 
 )()
 
@@ -94,5 +108,6 @@ var stream = (args) => compose(
 compose.Request = Request
 compose.Response = Response
 compose.client = client
+compose.buffer = buffer
 compose.stream = stream
 module.exports = compose

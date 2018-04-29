@@ -1,63 +1,27 @@
 
 var t = require('assert')
-var stream = require('stream')
+var fs = require('fs')
+var path = require('path')
 
 var Response = {
   buffer: require('../../response/buffer'),
 }
 
+var file = {
+  binary: path.resolve(__dirname, '../fixtures/cat.png'),
+}
+
 
 describe('buffer', () => {
 
-  it('utf8 encoding by default', async () => {
-    var options = {}
-    var res = new stream.Readable()
-    res._read = (size) => {/*noop*/}
-
-    setTimeout(() => {
-      res.emit('data', Buffer.from('hey'))
-      res.emit('end')
-    }, 0)
-
-    var {body} = await Response.buffer()({options, res})
+  it('response', async () => {
+    var {body} = await Response.buffer()({
+      res: fs.createReadStream(file.binary, {highWaterMark: 1024}),
+    })
     t.equal(
-      body,
-      'hey',
-      'should buffer the response body'
-    )
-  })
-
-  it('set specific encoding', async () => {
-    var res = new stream.Readable()
-    res._read = (size) => {/*noop*/}
-
-    setTimeout(() => {
-      res.emit('data', Buffer.from('hey'))
-      res.emit('end')
-    }, 0)
-
-    var {body} = await Response.buffer('base64')({res})
-    t.equal(
-      body,
-      'aGV5',
-      'should buffer the response body'
-    )
-  })
-
-  it('binary data', async () => {
-    var res = new stream.Readable()
-    res._read = (size) => {/*noop*/}
-
-    var input = Buffer.from('hey')
-    setTimeout(() => {
-      res.emit('data', input)
-      res.emit('end')
-    }, 0)
-
-    var {body} = await Response.buffer(null)({res})
-    t.ok(
-      input.equals(body),
-      'should buffer the response body'
+      fs.statSync(file.binary).size,
+      body.length,
+      'should return the raw buffer'
     )
   })
 

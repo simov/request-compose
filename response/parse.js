@@ -3,12 +3,12 @@ var querystring = require('querystring')
 var log = require('../utils/log')
 
 
-module.exports = () => ({options, res, res: {headers}, body}) => {
+module.exports = () => ({options, res, res: {headers}, body, raw}) => {
+
+  raw = body
 
   var header = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
-
-  var raw = body
 
   if (/json|javascript/.test(headers[header])) {
     try {
