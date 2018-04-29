@@ -29,7 +29,11 @@
   "bin": {},
   "main": "./build/index.js",
   "files": [
-    "build/",
+    "build/request/",
+    "build/response/",
+    "build/utils/",
+    "build/compose.js",
+    "build/index.js",
     "request/",
     "response/",
     "utils/",
