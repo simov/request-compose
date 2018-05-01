@@ -1,9 +1,9 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 var iconv = require('iconv-lite')
 
 var request = (options) => compose(
-  _ => compose.buffer(options), // !
+  _ => compose.buffer(options),
   ({res, body}) => ({res, body: iconv.decode(body, options.encoding)}),
 )()
 

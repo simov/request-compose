@@ -1,13 +1,9 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 var qs = require('qs')
-var http = require('http')
-
-var Response = compose.Response
-var request = compose.client
 
 // overrides are process-wide!
-Response.parse = () => ({res, res: {headers}, body}) => {
+compose.Response.parse = () => ({res, res: {headers}, body}) => {
   var content = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
 
@@ -19,6 +15,9 @@ Response.parse = () => ({res, res: {headers}, body}) => {
   return {res, body}
 }
 
+var http = require('http')
+
+
 ;(async () => {
   var server = await new Promise((resolve) => {
     var server = http.createServer()
@@ -29,7 +28,7 @@ Response.parse = () => ({res, res: {headers}, body}) => {
     server.listen(5000, () => resolve(server))
   })
   try {
-    var {body} = await request({
+    var {body} = await compose.client({
       url: 'http://localhost:5000',
     })
     console.log(body)

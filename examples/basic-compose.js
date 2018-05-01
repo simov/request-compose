@@ -1,6 +1,6 @@
 
+var compose = require('request-compose')
 var https = require('https')
-var compose = require('../')
 
 var request = compose(
   (options) => {

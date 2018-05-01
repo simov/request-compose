@@ -1,12 +1,12 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 compose.Request.oauth = require('request-oauth')
-var request = compose.stream // !
+
 var json = require('JSONStream')
 
 ;(async () => {
   try {
-    var {res} = await request({
+    var {res} = await compose.stream({
       url: 'https://stream.twitter.com/1.1/statuses/filter.json',
       qs: {
         track: 'twitter',

@@ -1,5 +1,5 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 compose.Request.oauth = require('request-oauth')
 var request = compose.client
 

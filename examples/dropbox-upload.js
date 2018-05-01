@@ -1,10 +1,9 @@
 
 var request = require('request-compose').client
 var fs = require('fs')
-var path = require('path')
 
 ;(async () => {
-  var file = '[FILE NAME]'
+  var file = 'cat.png'
   var token = '[ACCESS TOKEN]'
   try {
     var {body:meta} = await request({
@@ -15,7 +14,7 @@ var path = require('path')
         'content-type': 'application/octet-stream',
         'Dropbox-API-Arg': JSON.stringify({path: `/${file}`, mode: 'add'}),
       },
-      body: fs.createReadStream(path.resolve(__dirname, '[PATH TO FILE]', file)),
+      body: fs.createReadStream(file),
     })
     console.log(meta)
   }

@@ -1,5 +1,5 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 var Request = compose.Request
 var Response = compose.Response
 

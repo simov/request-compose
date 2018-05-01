@@ -1,5 +1,5 @@
 
-var compose = require('../')
+var compose = require('request-compose')
 var request = compose.client
 
 var pipe = ({auth, address}) => compose(
