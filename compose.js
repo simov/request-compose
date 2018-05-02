@@ -49,6 +49,7 @@ var request = (args) => compose(
   (() =>
     args.form ? Request.form(args.form) :
     args.json ? Request.json(args.json) :
+    args.multipart ? Request.multipart(args.multipart) :
     args.body ? Request.body(args.body) :
     ({options}) => ({options})
   )(),
