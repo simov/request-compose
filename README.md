@@ -66,7 +66,7 @@ Accepts a list of functions to execute and returns a [Promise]:
 ```js
 var doit = compose(
   (a) => a + 2,
-  (a) => b * 2,
+  (a) => a * 2,
 )
 ```
 
@@ -76,7 +76,7 @@ Then we can call it:
 var result = await doit(5) // 14
 ```
 
-A more practical example however would be to implement our own HTTP client:
+A more practical example however would be to compose our own HTTP client:
 
 ```js
 var compose = require('request-compose')
@@ -160,7 +160,7 @@ We can use these middlewares to compose our own HTTP client:
 
 # Opinionated Client
 
-`request-compose` comes with opinionated HTTP client that is [composed][function-composition] of the above [middlewares](#bundled-middlewares).
+`request-compose` comes with opinionated HTTP client that is composed of the above [middlewares](#bundled-middlewares).
 
 There are 3 types of composition available based on the returned data type:
 
@@ -189,7 +189,7 @@ var request = require('request-compose').stream
 var {res} = await request({options})
 ```
 
-The `stream` composition returns the `response` [Stream][stream-incoming-message].
+The `stream` composition returns the response [Stream][stream-incoming-message].
 
 ## options
 
@@ -205,24 +205,25 @@ var {res, body} = await request({
 })
 ```
 
-Additionally the following options are supported:
+Additionally the following options are available:
 
 Option     | Type     | Default | Description
 :--        | :--      | :--     | :--
 `url`      | `'string'` [`url object`][url-parse] | *undefined* | URL
 `qs`       | `{object}` `'string'` | *undefined* | URL querystring
-`form`     | `{object}` `'string'` | *undefined* | request body
-`json`     | `{object}` `'string'` | *undefined* | request body
+`form`     | `{object}` `'string'` | *undefined* | application/x-www-form-urlencoded request body
+`json`     | `{object}` `'string'` | *undefined* | JSON encoded request body
+`multipart`| `{object}` `[array]`  | *undefined* | multipart request body using [request-multipart], see [examples](#examples)
 `body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | *undefined* | request body
 `auth`     | `{user, pass}` | *undefined* | basic authorization
-`oauth`    | `{object}` | *undefined* | OAuth authorization, see [request-oauth]
+`oauth`    | `{object}` | *undefined* | OAuth authorization using [request-oauth], see [examples](#examples)
 `encoding` | [`'string'`][buffer-encoding] | *'utf8'* | response body encoding
 `redirect` | `{object}` | |
-.          | `max`    | *3*        | maximum number of redirects to follow
-.          | `all`    | *false*    | follow non-GET HTTP 3xx responses as redirects
-.          | `method` | *true*     | follow original HTTP method, otherwise convert all redirects to GET
-.          | `auth`   | *true*     | keep Authorization header when changing hostnames
-.          | `referer`| *false*    | add Referer header
+&nbsp;     | `max`    | *3*        | maximum number of redirects to follow
+&nbsp;     | `all`    | *false*    | follow non-GET HTTP 3xx responses as redirects
+&nbsp;     | `method` | *true*     | follow original HTTP method, otherwise convert all redirects to GET
+&nbsp;     | `auth`   | *true*     | keep Authorization header when changing hostnames
+&nbsp;     | `referer`| *false*    | add Referer header
 
 
 # Errors
@@ -259,8 +260,11 @@ Client composition | [Get GitHub user profile](https://github.com/simov/request-
 Buffer composition | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/buffer-decoding-iconv.js)
 Stream composition | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/stream-tweets.js)
 OAuth middleware | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/oauth.js)
+Multipart middleware | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/multipart.js)
 Override bundled middleware | [Override the `parse` middleware to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/mw-override.js)
 Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/dropbox-upload.js)
+HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-slack.js)
+HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-gdrive.js)
 Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/slack-weather-status.js)
 
 
@@ -278,9 +282,10 @@ Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/
   [pipeline]: https://en.wikipedia.org/wiki/Pipeline_(software)
   [pipe-operator]: https://github.com/tc39/proposal-pipeline-operator
 
-  [request-middlewares]: https://github.com/simov/request-compose/tree/v0.0.14/request
-  [response-middlewares]: https://github.com/simov/request-compose/tree/v0.0.14/response
+  [request-middlewares]: https://github.com/simov/request-compose/tree/master/request
+  [response-middlewares]: https://github.com/simov/request-compose/tree/master/response
   [request-oauth]: https://www.npmjs.com/package/request-oauth
+  [request-multipart]: https://www.npmjs.com/package/request-multipart
   [request-logs]: https://www.npmjs.com/package/request-logs
 
   [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
