@@ -1,6 +1,6 @@
 {
   "name": "request-compose",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Composable HTTP Client",
   "keywords": [
     "compose",
