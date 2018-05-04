@@ -218,12 +218,17 @@ Option     | Type     | Default | Description
 `auth`     | `{user, pass}` | *undefined* | basic authorization
 `oauth`    | `{object}` | *undefined* | OAuth authorization using [request-oauth], see [examples](#examples)
 `encoding` | [`'string'`][buffer-encoding] | *'utf8'* | response body encoding
-`redirect` | `{object}` | |
-&nbsp;     | `max`    | *3*        | maximum number of redirects to follow
-&nbsp;     | `all`    | *false*    | follow non-GET HTTP 3xx responses as redirects
-&nbsp;     | `method` | *true*     | follow original HTTP method, otherwise convert all redirects to GET
-&nbsp;     | `auth`   | *true*     | keep Authorization header when changing hostnames
-&nbsp;     | `referer`| *false*    | add Referer header
+`redirect` | `{object}` | *object* | see below
+
+#### redirect
+
+Option    | Default | Description
+:--       | :--     | :--
+`max`     | *3*     | maximum number of redirects to follow
+`all`     | *false* | follow non-GET HTTP 3xx responses as redirects
+`method`  | *true*  | follow original HTTP method, otherwise convert all redirects to GET
+`auth`    | *true*  | keep Authorization header when changing hostnames
+`referer` | *false* | add Referer header
 
 
 # Errors
@@ -281,6 +286,8 @@ Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/
   [function-composition]: https://en.wikipedia.org/wiki/Function_composition_(computer_science)
   [pipeline]: https://en.wikipedia.org/wiki/Pipeline_(software)
   [pipe-operator]: https://github.com/tc39/proposal-pipeline-operator
+
+  [chunked]: https://en.wikipedia.org/wiki/Chunked_transfer_encoding
 
   [request-middlewares]: https://github.com/simov/request-compose/tree/master/request
   [response-middlewares]: https://github.com/simov/request-compose/tree/master/response
