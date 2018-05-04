@@ -7,7 +7,6 @@ var http = require('http')
 var compose = require('../../')
 
 var file = {
-  text: path.resolve(__dirname, './body.js'),
   binary: path.resolve(__dirname, '../fixtures/cat.png'),
 }
 
@@ -19,9 +18,9 @@ describe('body', () => {
     server.on('request', (req, res) => {
       if (req.url === '/stream') {
         t.equal(
-          req.headers['transfer-encoding'],
-          'chunked',
-          'transfer encoding should be chunked'
+          req.headers['content-length'],
+          '17552',
+          'content-length should be set'
         )
       }
       else {
@@ -60,19 +59,7 @@ describe('body', () => {
     )
   })
 
-  it('stream text', async () => {
-    var {body} = await compose.buffer({
-      url: 'http://localhost:5000/stream',
-      body: fs.createReadStream(file.text, {highWaterMark: 1024}),
-    })
-    t.equal(
-      fs.statSync(file.text).size,
-      body.length,
-      'input file size should equal response body length'
-    )
-  })
-
-  it('stream binary', async () => {
+  it('stream', async () => {
     var {body} = await compose.buffer({
       url: 'http://localhost:5000/stream',
       body: fs.createReadStream(file.binary, {highWaterMark: 1024}),
