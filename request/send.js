@@ -15,6 +15,13 @@ module.exports = () => ({options, body}) => new Promise((resolve, reject) => {
           resolve({options, res})
         })
         .on('error', reject)
+        .on('timeout', () => {
+          var err = new Error('request-compose: timeout')
+          err.code = 'ETIMEDOUT'
+          req.emit('error', err)
+          req.abort()
+        })
+        .setTimeout(options.timeout)
 
   ;(body instanceof stream.Stream)
     ? body.pipe(req)

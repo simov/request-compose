@@ -1,6 +1,4 @@
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-
 var t = require('assert')
 var fs = require('fs')
 var path = require('path')
@@ -48,6 +46,7 @@ describe('protocol', () => {
   it('https', async () => {
     var {res} = await request({
       url: 'https://localhost:5002',
+      rejectUnauthorized: false,
     })
     t.equal(res.statusCode, 200)
     t.equal(res.statusMessage, 'HTTPS')

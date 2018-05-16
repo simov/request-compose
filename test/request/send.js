@@ -1,6 +1,4 @@
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-
 var t = require('assert')
 var fs = require('fs')
 var path = require('path')
@@ -49,6 +47,9 @@ describe('send', () => {
         else if (req.url === '/error') {
           req.destroy()
         }
+        else if (req.url === '/timeout') {
+          setTimeout(() => {}, 150)
+        }
       })
       httpsServer.listen(5002, resolve)
     })
@@ -59,6 +60,7 @@ describe('send', () => {
       options: {
         protocol: 'http:',
         port: 5001,
+        timeout: 5000,
       }
     })
     t.equal(res.statusCode, 200)
@@ -70,6 +72,8 @@ describe('send', () => {
       options: {
         protocol: 'https:',
         port: 5002,
+        timeout: 5000,
+        rejectUnauthorized: false,
       }
     })
     t.equal(res.statusCode, 200)
@@ -82,6 +86,7 @@ describe('send', () => {
         method: 'POST',
         protocol: 'http:',
         port: 5001,
+        timeout: 5000,
       },
       body: 'hey'
     })
@@ -93,7 +98,9 @@ describe('send', () => {
         options: {
           protocol: 'https:',
           port: 5002,
-          path: '/error'
+          path: '/error',
+          timeout: 5000,
+          rejectUnauthorized: false,
         }
       })
     }
@@ -101,6 +108,28 @@ describe('send', () => {
       t.equal(
         err.message,
         'socket hang up',
+        'should throw error'
+      )
+    }
+  })
+
+  it('abort request on idle connection', async () => {
+    try {
+      var {res} = await Request.send({
+        options: {
+          protocol: 'https:',
+          port: 5002,
+          path: '/timeout',
+          timeout: 100,
+          rejectUnauthorized: false,
+        }
+      })
+    }
+    catch (err) {
+      t.equal(err.code, 'ETIMEDOUT')
+      t.equal(
+        err.message,
+        'request-compose: timeout',
         'should throw error'
       )
     }
