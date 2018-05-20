@@ -4,9 +4,6 @@ var querystring = require('querystring')
 
 module.exports = (form) => ({options, options: {headers}}) => {
 
-  form = typeof form === 'object' ? querystring.stringify(
-    JSON.parse(JSON.stringify(form))) : (form || '')
-
   var header = Object.keys(headers)
     .find((name) => name.toLowerCase() === 'content-type')
 
@@ -14,7 +11,14 @@ module.exports = (form) => ({options, options: {headers}}) => {
     headers['content-type'] = 'application/x-www-form-urlencoded'
   }
 
-  return {options, body: rfc3986(form)}
+  var body =
+    typeof form === 'string'
+      ? form :
+    typeof form === 'object'
+      ? rfc3986(querystring.stringify(JSON.parse(JSON.stringify(form)))) :
+      ''
+
+  return {options, body}
 }
 
 var rfc3986 = (str) => str.replace(

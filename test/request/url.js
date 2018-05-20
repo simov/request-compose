@@ -35,16 +35,16 @@ describe('url', () => {
     )
   })
 
-  it('append querystring to path', () => {
+  it('querystring', () => {
     t.deepStrictEqual(
-      Request.url(url.parse('https://my.io/p?a=1&b=2'))({options: {}}).options,
+      Request.url(url.parse('https://my.io/?a=!(1)&b=2+3#anchor'))({options: {}}).options,
       {
         protocol: 'https:',
         hostname: 'my.io',
         port: null,
-        path: '/p?a=1&b=2'
+        path: '/?a=!(1)&b=2+3'
       },
-      'should set http.request options'
+      'do not encode querystring'
     )
   })
 

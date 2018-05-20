@@ -207,18 +207,22 @@ var {res, body} = await request({
 
 Additionally the following options are available:
 
-Option     | Type     | Default | Description
-:--        | :--      | :--     | :--
-`url`      | `'string'` [`url object`][url-parse] | *undefined* | URL
-`qs`       | `{object}` `'string'` | *undefined* | URL querystring
-`form`     | `{object}` `'string'` | *undefined* | application/x-www-form-urlencoded request body
-`json`     | `{object}` `'string'` | *undefined* | JSON encoded request body
-`multipart`| `{object}` `[array]`  | *undefined* | multipart request body using [request-multipart], see [examples](#examples)
-`body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | *undefined* | request body
-`auth`     | `{user, pass}` | *undefined* | basic authorization
-`oauth`    | `{object}` | *undefined* | OAuth authorization using [request-oauth], see [examples](#examples)
-`encoding` | [`'string'`][buffer-encoding] | *'utf8'* | response body encoding
-`redirect` | `{object}` | *object* | see below
+Option     | Type                  | Description
+:--        | :--                   | :--
+`url`      | `'string'` [`url object`][url-parse] | URL _(encoding - see below)_
+`qs`       | `{object}` `'string'` | URL querystring _(encoding - see below)_
+`form`     | `{object}` `'string'` | application/x-www-form-urlencoded request body _(encoding - see below)_
+`json`     | `{object}` `'string'` | JSON encoded request body
+`multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#examples)
+`body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | request body
+`auth`     | `{user, pass}`        | Basic authorization
+`oauth`    | `{object}` | OAuth authorization using [request-oauth], see [examples](#examples)
+`encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
+`redirect` | `{object}` | _see below_
+
+> Querystring set in the `url`, and/or in `qs` and/or in `form` as _'string'_ is left untouched, meaning that the proper encoding is left to the user.
+
+> When `qs` and/or `form` is _{object}_ the querystring is encoded using the Node's [querystring] module which mirrors the global [encodeURIComponent][encodeuri] method. Additionally all reserved characters according to RFC3986 are encoded as well. Full list of all reserved characters that are being encoded can be found [here][reserved-characters].
 
 #### redirect
 
@@ -306,3 +310,6 @@ Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/
   [https-request]: https://nodejs.org/dist/latest-v10.x/docs/api/https.html#https_https_request_options_callback
   [url-parse]: https://nodejs.org/dist/latest-v10.x/docs/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
   [querystring-parse]: https://nodejs.org/dist/latest-v10.x/docs/api/querystring.html#querystring_querystring_parse_str_sep_eq_options
+  [querystring]: https://nodejs.org/dist/latest-v10.x/docs/api/querystring.html
+  [encodeuri]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+  [reserved-characters]: https://en.wikipedia.org/wiki/Percent-encoding#Types_of_URI_characters

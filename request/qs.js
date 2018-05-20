@@ -4,15 +4,20 @@ var querystring = require('querystring')
 
 module.exports = (qs) => ({options}) => {
 
-  qs = typeof qs === 'object' ? qs : querystring.parse(qs)
+  if (typeof qs === 'object') {
+    qs = JSON.parse(JSON.stringify(qs))
 
-  var [path, query] = options.path.split('?')
-  query = querystring.parse(query)
+    var [path, query] = options.path.split('?')
+    query = querystring.parse(query)
 
-  qs = rfc3986(querystring.stringify(
-    JSON.parse(JSON.stringify(Object.assign(query, qs)))))
+    qs = rfc3986(querystring.stringify(Object.assign(query, qs)))
+    options.path = path + (qs ? `?${qs}` : '')
+  }
+  else if (typeof qs === 'string') {
+    var [path, query] = options.path.split('?')
+    options.path = path + (query ? `?${query}&${qs}` : `?${qs}`)
+  }
 
-  options.path = path + (qs ? `?${qs}` : '')
   return {options}
 }
 
