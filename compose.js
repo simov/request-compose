@@ -35,7 +35,7 @@ var utils = load('utils', [
 ])
 
 
-var request = (args) => compose(
+var request = (Request, Response) => (args) => compose(
 
   Request.defaults(args),
 
@@ -69,35 +69,35 @@ var request = (args) => compose(
 )()
 
 
-var client = (args) => compose(
+var client = (Request, Response) => (args) => compose(
 
-  _ => request(args),
+  _ => request(Request, Response)(args),
 
   Response.buffer(),
   Response.string(args.encoding),
   Response.parse(),
 
   Response.status(),
-  Response.redirect(args, client),
+  Response.redirect(args, client(Request, Response)),
 
 )()
 
 
-var buffer = (args) => compose(
+var buffer = (Request, Response) => (args) => compose(
 
-  _ => request(args),
+  _ => request(Request, Response)(args),
 
   Response.buffer(),
 
   Response.status(),
-  Response.redirect(args, buffer),
+  Response.redirect(args, buffer(Request, Response)),
 
 )()
 
 
-var stream = (args) => compose(
+var stream = (Request, Response) => (args) => compose(
 
-  _ => request(args),
+  _ => request(Request, Response)(args),
 
   Response.status(),
   // TODO: should buffer the read chunks and re-write them
@@ -106,9 +106,24 @@ var stream = (args) => compose(
 )()
 
 
+var override = (mw) => ((
+    req = Object.assign({}, Request, mw.Request),
+    res = Object.assign({}, Response, mw.Response),
+  ) =>
+    Object.assign({}, compose, {
+      Request: req,
+      Response: res,
+      client: client(req, res),
+      buffer: buffer(req, res),
+      stream: stream(req, res),
+    })
+  )()
+
+
 compose.Request = Request
 compose.Response = Response
-compose.client = client
-compose.buffer = buffer
-compose.stream = stream
+compose.client = client(Request, Response)
+compose.buffer = buffer(Request, Response)
+compose.stream = stream(Request, Response)
+compose.override = override
 module.exports = compose
