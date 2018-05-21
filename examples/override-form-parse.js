@@ -2,34 +2,41 @@
 var compose = require('request-compose')
 var qs = require('qs')
 
-// overrides are process-wide!
+// process-wide override!
+compose.Request.form = (form) => ({options, options: {headers}}) => {
+  headers['content-type'] = 'application/x-www-form-urlencoded'
+  // use qs instead of querystring for nested objects
+  return {options, body: qs.stringify(form)}
+}
+// process-wide override!
 compose.Response.parse = () => ({res, res: {headers}, body}) => {
-  var content = Object.keys(headers)
-    .find((name) => name.toLowerCase() === 'content-type')
-
+  var content = Object.keys(headers).find((name) => /content-type/i.test(name))
   if (/application\/x-www-form-urlencoded/.test(headers[content])) {
     // use qs instead of querystring for nested objects
     body = qs.parse(body)
   }
-
   return {res, body}
 }
 
 var http = require('http')
 
-
 ;(async () => {
   var server = await new Promise((resolve) => {
     var server = http.createServer()
     server.on('request', (req, res) => {
-      res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-      res.end(qs.stringify({a: {b: {c: '(╯°□°）╯︵ ┻━┻'}}}))
+      var body = ''
+      req.on('data', (chunk) => body += chunk)
+      req.on('end', () => {
+        res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+        res.end(body)
+      })
     })
     server.listen(5000, () => resolve(server))
   })
   try {
     var {body} = await compose.client({
       url: 'http://localhost:5000',
+      form: {a: {b: {c: '(╯°□°）╯︵ ┻━┻'}}},
     })
     console.log(body)
     server.close()
