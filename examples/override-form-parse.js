@@ -9,13 +9,14 @@ compose.Request.form = (form) => ({options, options: {headers}}) => {
   return {options, body: qs.stringify(form)}
 }
 // process-wide override!
-compose.Response.parse = () => ({res, res: {headers}, body}) => {
+compose.Response.parse = () => ({options, res, res: {headers}, body, raw}) => {
   var content = Object.keys(headers).find((name) => /content-type/i.test(name))
   if (/application\/x-www-form-urlencoded/.test(headers[content])) {
     // use qs instead of querystring for nested objects
+    raw = body
     body = qs.parse(body)
   }
-  return {res, body}
+  return {options, res, body, raw}
 }
 
 var http = require('http')
