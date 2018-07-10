@@ -218,6 +218,7 @@ Option     | Type                  | Description
 `auth`     | `{user, pass}`        | Basic authorization
 `oauth`    | `{object}` | OAuth authorization using [request-oauth], see [examples](#examples)
 `encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
+`cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#examples)
 `redirect` | `{object}` | _see below_
 
 > Querystring set in the `url`, and/or in `qs` and/or in `form` as _'string'_ is left untouched, meaning that the proper encoding is left to the user.
@@ -275,6 +276,7 @@ Override bundled middleware - per compose instance | [Override the `qs` middlewa
 Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/dropbox-upload.js)
 HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-slack.js)
 HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-gdrive.js)
+Login using cookies | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/login-wallhaven.js)
 Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/slack-weather-status.js)
 
 
@@ -298,6 +300,7 @@ Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/
   [response-middlewares]: https://github.com/simov/request-compose/tree/master/response
   [request-oauth]: https://www.npmjs.com/package/request-oauth
   [request-multipart]: https://www.npmjs.com/package/request-multipart
+  [request-cookie]: https://www.npmjs.com/package/request-cookie
   [request-logs]: https://www.npmjs.com/package/request-logs
 
   [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
