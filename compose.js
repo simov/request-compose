@@ -47,6 +47,10 @@ var request = (Request, Response) => (args) => compose(
   )(),
 
   (() =>
+    args.cookie ? Request.cookie(args.cookie) : ({options}) => ({options})
+  )(),
+
+  (() =>
     args.form ? Request.form(args.form) :
     args.json ? Request.json(args.json) :
     args.multipart ? Request.multipart(args.multipart) :
@@ -73,6 +77,11 @@ var client = (Request, Response) => (args) => compose(
 
   _ => request(Request, Response)(args),
 
+  (() =>
+    args.cookie ? Response.cookie(args.cookie) :
+      ({options, res}) => ({options, res})
+  )(),
+
   Response.buffer(),
   Response.string(args.encoding),
   Response.parse(),
@@ -87,6 +96,11 @@ var buffer = (Request, Response) => (args) => compose(
 
   _ => request(Request, Response)(args),
 
+  (() =>
+    args.cookie ? Response.cookie(args.cookie) :
+      ({options, res}) => ({options, res})
+  )(),
+
   Response.buffer(),
 
   Response.status(),
@@ -98,6 +112,11 @@ var buffer = (Request, Response) => (args) => compose(
 var stream = (Request, Response) => (args) => compose(
 
   _ => request(Request, Response)(args),
+
+  (() =>
+    args.cookie ? Response.cookie(args.cookie) :
+      ({options, res}) => ({options, res})
+  )(),
 
   Response.status(),
   // TODO: should buffer the read chunks and re-write them
