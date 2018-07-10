@@ -1,5 +1,6 @@
 
 var url = require('url')
+var querystring = require('querystring')
 var error = require('../utils/error')
 
 
@@ -39,12 +40,6 @@ module.exports = (args, client) => ({options, res, body, raw}) => {
       (options.port && options.port !== 80 ? `:${options.port}` : ''),
       location
     )
-  }
-
-  // querystring
-  var [_, query] = options.path.split('?')
-  if (query) {
-    location += `?${query}`
   }
 
   // args

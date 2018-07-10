@@ -94,27 +94,11 @@ describe('redirect', () => {
     t.equal(body, 'ok', 'should follow absolute URLs')
   })
 
-  it('absolute URL + querystring', async () => {
-    var {body} = await request({
-      url: 'http://localhost:5000/absolute?b=2',
-      qs: {a: 1}
-    })
-    t.deepEqual(body, {a: '1', b: '2'}, 'should persist URL querystring')
-  })
-
   it('relative URL', async () => {
     var {body} = await request({
       url: 'http://localhost:5000/relative'
     })
     t.equal(body, 'ok', 'should follow relative URLs')
-  })
-
-  it('relative URL + querystring', async () => {
-    var {body} = await request({
-      url: 'http://localhost:5000/relative?b=2',
-      qs: {a: 1}
-    })
-    t.deepEqual(body, {a: '1', b: '2'}, 'should persist URL querystring')
   })
 
   it('stuck in redirect loop', async () => {
