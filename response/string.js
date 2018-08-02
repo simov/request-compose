@@ -2,9 +2,9 @@
 var log = require('../utils/log')
 
 
-module.exports = (encoding) => ({options, res, body}) => {
+module.exports = (encoding) => ({options, res, body, raw}) => {
 
-  var raw = body
+  raw = body
 
   body = Buffer.from(body).toString(encoding)
   log({body})

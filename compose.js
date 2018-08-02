@@ -22,6 +22,7 @@ var Request = load('request', [
 
 var Response = load('response', [
   'buffer',
+  'gzip',
   'string',
   'parse',
   'status',
@@ -83,6 +84,7 @@ var client = (Request, Response) => (args) => compose(
   )(),
 
   Response.buffer(),
+  Response.gzip(),
   Response.string(args.encoding),
   Response.parse(),
 

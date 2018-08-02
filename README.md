@@ -171,7 +171,12 @@ var request = require('request-compose').client
 var {res, body} = await request({options})
 ```
 
-The `client` composition parses the response `body` to string using `utf8` encoding by default. Additonally it tries to parse JSON and Querystring response bodies with valid `content-type`.
+The `client` composition does the following:
+
+- buffers the response body
+- decompresses `gzip` and `deflate` encoded bodies with valid `content-encoding` header
+- converts the response body to string using `utf8` encoding by default
+- tries to parse `JSON` and `querystring` encoded bodies with valid `content-type` header
 
 ## buffer
 
