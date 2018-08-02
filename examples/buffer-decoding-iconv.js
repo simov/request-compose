@@ -10,7 +10,7 @@ var request = (options) => compose(
 ;(async () => {
   try {
     var {body} = await request({
-      url: 'https://raw.githubusercontent.com/simov/markdown-viewer/master/test/encoding/windows-1251.md',
+      url: 'https://raw.githubusercontent.com/simov/markdown-syntax/master/encoding/windows-1251.md',
       encoding: 'windows-1251',
     })
     console.log(body)

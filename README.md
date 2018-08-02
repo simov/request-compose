@@ -269,20 +269,27 @@ DEBUG=req,res,body,json,nocolor node app.js
 
 Topic | Example
 :--   | :--
+**Basics**
 Types of lambda functions | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-compose.js)
 Bundled middlewares | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-middlewares.js)
 Client composition | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-client.js)
 Buffer composition | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/buffer-decoding-iconv.js)
 Stream composition | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/stream-tweets.js)
-OAuth middleware | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/oauth.js)
-Multipart middleware | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/multipart.js)
+**Middlewares** |
+OAuth | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/oauth.js)
+Multipart | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/multipart.js)
+Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/gzip-client.js)
+Login using cookies | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/login-wallhaven.js)
+**Override** |
 Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/override-form-parse.js)
 Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/override-qs.js)
+**Stream** |
 Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/dropbox-upload.js)
 HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-slack.js)
 HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-gdrive.js)
-Login using cookies | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/login-wallhaven.js)
+**Pipeline** |
 Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/slack-weather-status.js)
+Pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/repo-search.js)
 
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Package Version)
