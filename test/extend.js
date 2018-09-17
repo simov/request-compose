@@ -3,7 +3,7 @@ var t = require('assert')
 var http = require('http')
 var qs = require('qs')
 
-var request1 = require('../').override({
+var request1 = require('../').extend({
   Request: {
     qs: (_qs) => ({options}) => {
       options.path += `?${qs.stringify(_qs)}`
@@ -15,7 +15,7 @@ var request1 = require('../').override({
 var request2 = require('../').client
 
 
-describe('override', () => {
+describe('extend', () => {
   var server
 
   before((done) => {

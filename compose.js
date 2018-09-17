@@ -127,7 +127,7 @@ var stream = (Request, Response) => (args) => compose(
 )()
 
 
-var override = (mw) => ((
+var extend = (mw) => ((
     req = Object.assign({}, Request, mw.Request),
     res = Object.assign({}, Response, mw.Response),
   ) =>
@@ -146,5 +146,5 @@ compose.Response = Response
 compose.client = client(Request, Response)
 compose.buffer = buffer(Request, Response)
 compose.stream = stream(Request, Response)
-compose.override = override
+compose.extend = extend
 module.exports = compose
