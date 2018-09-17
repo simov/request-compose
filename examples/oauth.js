@@ -1,7 +1,7 @@
 
-var compose = require('request-compose')
-compose.Request.oauth = require('request-oauth')
-var request = compose.client
+var request = require('../').extend({
+  Request: {oauth: require('request-oauth')}
+}).client
 
 ;(async () => {
   try {

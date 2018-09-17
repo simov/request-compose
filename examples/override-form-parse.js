@@ -1,5 +1,5 @@
 
-var compose = require('request-compose')
+var compose = require('../')
 var qs = require('qs')
 
 // process-wide override!

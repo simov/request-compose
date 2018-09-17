@@ -1,5 +1,5 @@
 
-var request = require('request-compose').override({
+var request = require('../').override({
   Request: {
     qs: (qs) => ({options}) => {
       // q=language:javascript+stars:>50

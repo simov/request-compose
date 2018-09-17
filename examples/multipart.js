@@ -1,14 +1,17 @@
 
-var compose = require('request-compose')
-compose.Request.oauth = require('request-oauth')
-compose.Request.multipart = require('request-multipart')
+var request = require('../').extend({
+  Request: {
+    oauth: require('request-oauth'),
+    multipart: require('request-multipart'),
+  }
+}).client
 
 var fs = require('fs')
 
 ;(async () => {
   var file = 'cat.png'
   try {
-    var {body:meta} = await compose.client({
+    var {body:meta} = await request({
       method: 'POST',
       url: 'https://api.twitter.com/1.1/statuses/update_with_media.json',
       oauth: {

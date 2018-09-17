@@ -1,6 +1,7 @@
 
-var compose = require('request-compose')
-compose.Request.multipart = require('request-multipart')
+var compose = require('../').extend({
+  Request: {multipart: require('request-multipart')}
+})
 
 ;(async () => {
   var file = 'cat.png'

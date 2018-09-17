@@ -1,8 +1,8 @@
 
-var compose = require('request-compose')
-compose.Request.cookie = require('request-cookie').Request
-compose.Response.cookie = require('request-cookie').Response
-var request = compose.client
+var request = require('../').extend({
+  Request: {cookie: require('request-cookie').Request},
+  Response: {cookie: require('request-cookie').Response},
+}).client
 
 ;(async () => {
   try {

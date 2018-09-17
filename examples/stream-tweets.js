@@ -1,5 +1,5 @@
 
-var compose = require('request-compose')
+var compose = require('../')
 compose.Request.oauth = require('request-oauth')
 
 var json = require('JSONStream')

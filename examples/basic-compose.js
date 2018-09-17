@@ -1,5 +1,5 @@
 
-var compose = require('request-compose')
+var compose = require('../')
 var https = require('https')
 
 var request = compose(

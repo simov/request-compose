@@ -1,5 +1,5 @@
 
-var request = require('request-compose').client
+var request = require('../').client
 var fs = require('fs')
 
 ;(async () => {
