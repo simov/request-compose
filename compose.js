@@ -36,7 +36,7 @@ var utils = load('utils', [
 ])
 
 
-var request = (Request, Response) => (args) => compose(
+var request = (Request) => (args) => compose(
 
   Request.defaults(args),
 
@@ -76,7 +76,7 @@ var request = (Request, Response) => (args) => compose(
 
 var client = (Request, Response) => (args) => compose(
 
-  _ => request(Request, Response)(args),
+  _ => request(Request)(args),
 
   (() =>
     args.cookie ? Response.cookie(args.cookie) :
@@ -96,7 +96,7 @@ var client = (Request, Response) => (args) => compose(
 
 var buffer = (Request, Response) => (args) => compose(
 
-  _ => request(Request, Response)(args),
+  _ => request(Request)(args),
 
   (() =>
     args.cookie ? Response.cookie(args.cookie) :
@@ -113,7 +113,7 @@ var buffer = (Request, Response) => (args) => compose(
 
 var stream = (Request, Response) => (args) => compose(
 
-  _ => request(Request, Response)(args),
+  _ => request(Request)(args),
 
   (() =>
     args.cookie ? Response.cookie(args.cookie) :
