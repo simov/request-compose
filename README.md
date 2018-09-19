@@ -42,10 +42,7 @@ var Response = compose.Response
 - [**Compose**](#compose)
 - [Bundled **Middlewares**](#bundled-middlewares)
 - [Opinionated **Client**](#opinionated-client)
-  - [client](#client)
-  - [buffer](#buffer)
-  - [stream](#stream)
-  - [options](#options)
+  - [client](#client) / [buffer](#buffer) / [stream](#stream) / [options](#options) / [extend](#extend)
 - [**Errors**](#errors)
 - [Debug **Logs**](#debug-logs)
 - [**Examples**](#examples)
@@ -53,9 +50,7 @@ var Response = compose.Response
 
 # Compose
 
-> In computer science, __function composition__ (not to be confused with object composition) is an act or mechanism to combine simple functions to build more complicated ones. Like the usual composition of functions in mathematics, the result of each function is passed as the argument of the next, and the result of the last one is the result of the whole.
-
-> _source: [Wikipedia][function-composition]_
+> In computer science, __[function composition][function-composition]__ (not to be confused with object composition) is an act or mechanism to combine simple functions to build more complicated ones. Like the usual composition of functions in mathematics, the result of each function is passed as the argument of the next, and the result of the last one is the result of the whole.
 
 ```js
 var compose = require('request-compose')
@@ -158,6 +153,21 @@ We can use these middlewares to compose our own HTTP client:
 })()
 ```
 
+Type | Middleware | Input | Arguments | Returns
+:--- | :---       | :---  | :---      | :---
+Request | defaults | {input} | {input} | {options}
+Request | url, qs, cookie | see [options](#options) | {options} | {options}
+Request | form, json, multipart, body | see [options](#options) | {options} | {options, body}
+Request | auth, oauth | see [options](#options) | {options, body} | {options, body}
+Request | length | - | {options, body} | {options, body}
+Request | send | - | {options, body} | {options, res}
+Response | buffer | - | {options, res} | {options, res, body}
+Response | gzip | - | {options, res, body, raw} | {options, res, body, raw}
+Response | string | see [options](#options) | {options, res, body, raw} | {options, res, body, raw}
+Response | parse, status | - | {options, res, body, raw} | {options, res, body, raw}
+Response | redirect | (input, client) | {options, res, body, raw} | new composition
+
+
 # Opinionated Client
 
 `request-compose` comes with opinionated HTTP client that is composed of the above [middlewares](#bundled-middlewares).
@@ -218,12 +228,12 @@ Option     | Type                  | Description
 `qs`       | `{object}` `'string'` | URL querystring _(encoding - see below)_
 `form`     | `{object}` `'string'` | application/x-www-form-urlencoded request body _(encoding - see below)_
 `json`     | `{object}` `'string'` | JSON encoded request body
-`multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#examples)
+`multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#external-middlewares)
 `body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | request body
 `auth`     | `{user, pass}`        | Basic authorization
-`oauth`    | `{object}` | OAuth authorization using [request-oauth], see [examples](#examples)
+`oauth`    | `{object}` | OAuth authorization using [request-oauth], see [examples](#external-middlewares)
 `encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
-`cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#examples)
+`cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#external-middlewares)
 `redirect` | `{object}` | _see below_
 
 > Querystring set in the `url`, and/or in `qs` and/or in `form` as _'string'_ is left untouched, meaning that the proper encoding is left to the user.
@@ -240,6 +250,20 @@ Option    | Default | Description
 `auth`    | *true*  | keep Authorization header when changing hostnames
 `referer` | *false* | add Referer header
 
+## extend
+
+Extend or override any of the bundled [request][request-middlewares] and [response][response-middlewares] middlewares:
+
+```js
+var request = require('request-compose').extend({
+  Request: {
+    oauth: require('request-oauth'),
+    multipart: require('request-multipart'),
+    cookie: require('request-cookie').Request
+  },
+  Response: {cookie: require('request-cookie').Response},
+}).client
+```
 
 # Errors
 
@@ -267,29 +291,52 @@ DEBUG=req,res,body,json,nocolor node app.js
 
 # Examples
 
+## Basics
+
 Topic | Example
 :--   | :--
-**Basics**
-Types of lambda functions | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-compose.js)
+Types of lambda functions | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-lambda.js)
 Bundled middlewares | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-middlewares.js)
-Client composition | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-client.js)
-Buffer composition | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/buffer-decoding-iconv.js)
-Stream composition | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/stream-tweets.js)
-**Middlewares** |
-OAuth | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/oauth.js)
-Multipart | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/multipart.js)
-Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/gzip-client.js)
-Login using cookies | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/login-wallhaven.js)
-**Override** |
-Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/override-form-parse.js)
-Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/override-qs.js)
-**Stream** |
-Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/dropbox-upload.js)
-HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-slack.js)
-HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/dropbox-to-gdrive.js)
-**Pipeline** |
-Pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/slack-weather-status.js)
-Pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/repo-search.js)
+Wrap it up and extend it | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-extend.js)
+
+## Compositions
+
+Topic | Example
+:--   | :--
+Client | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/compose-client.js)
+Buffer | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/compose-buffer.js)
+Stream | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/compose-stream.js)
+
+## External Middlewares
+
+Topic | Example
+:--   | :--
+OAuth ([request-oauth]) | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/mw-oauth.js)
+Multipart ([request-multipart]) | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/mw-multipart.js)
+Cookie ([request-cookie]) | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/mw-cookie.js)
+
+## Stream
+
+Topic | Example
+:--   | :--
+Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-upload.js)
+HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-slack.js)
+HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-gdrive.js)
+
+## Misc
+
+Topic | Example
+:--   | :--
+Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/misc-gzip.js)
+Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/misc-extend.js)
+Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/misc-override.js)
+
+## Pipeline
+
+Topic | Example
+:--   | :--
+App pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/pipe-slack-weather-status.js)
+App pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/pipe-repo-search.js)
 
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Package Version)
