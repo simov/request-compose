@@ -28,7 +28,7 @@ var options = [
 ]
 
 
-module.exports = (args = {}) => () => {
+module.exports = (_args = {}) => (args = _args) => {
 
   var defaults = {
     protocol: args.protocol || 'http:',

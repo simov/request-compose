@@ -24,7 +24,7 @@ describe('defaults', () => {
     )
   })
 
-  it('override', () => {
+  it('override - input', () => {
     var args = {
       protocol: 'https:',
       hostname: 'website.com',
@@ -36,6 +36,23 @@ describe('defaults', () => {
     }
     t.deepStrictEqual(
       Request.defaults(args)().options,
+      args,
+      'should override http.request defaults'
+    )
+  })
+
+  it('override - compose', () => {
+    var args = {
+      protocol: 'https:',
+      hostname: 'website.com',
+      port: 8080,
+      method: 'POST',
+      path: '/some/path?a=1&b=2',
+      headers: {'content-type': 'application/json'},
+      timeout: 3000,
+    }
+    t.deepStrictEqual(
+      Request.defaults()(args).options,
       args,
       'should override http.request defaults'
     )
