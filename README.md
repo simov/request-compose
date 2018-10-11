@@ -338,6 +338,13 @@ Topic | Example
 App pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/pipe-slack-weather-status.js)
 App pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/pipe-repo-search.js)
 
+## Modules
+
+Topic | Example
+:--   | :--
+Google Chrome Web Store HTTP Client | [chrome-webstore]
+wallhaven.cc HTTP Client | [wallhaven-client]
+
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Package Version)
   [travis-ci]: https://img.shields.io/travis/simov/request-compose/master.svg?style=flat-square (Build Status - Travis CI)
@@ -376,3 +383,6 @@ App pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket]
   [querystring]: https://nodejs.org/dist/latest-v10.x/docs/api/querystring.html
   [encodeuri]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
   [reserved-characters]: https://en.wikipedia.org/wiki/Percent-encoding#Types_of_URI_characters
+
+  [chrome-webstore]: https://github.com/simov/chrome-webstore
+  [wallhaven-client]: https://github.com/simov/wallhaven-client
