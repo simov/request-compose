@@ -188,6 +188,8 @@ The `client` composition does the following:
 - converts the response body to string using `utf8` encoding by default
 - tries to parse `JSON` and `querystring` encoded bodies with valid `content-type` header
 
+Returns either String or Object.
+
 ## buffer
 
 ```js
@@ -195,7 +197,12 @@ var request = require('request-compose').buffer
 var {res, body} = await request({options})
 ```
 
-The `buffer` composition returns the response `body` as raw [Buffer][buffer].
+The `buffer` composition does the following:
+
+- buffers the response body
+- decompresses `gzip` and `deflate` encoded bodies with valid `content-encoding` header
+
+Returns [Buffer][buffer].
 
 ## stream
 

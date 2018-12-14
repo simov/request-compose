@@ -104,6 +104,7 @@ var buffer = (Request, Response) => (args) => compose(
   )(),
 
   Response.buffer(),
+  Response.gzip(),
 
   Response.status(),
   Response.redirect(args, buffer(Request, Response)),
