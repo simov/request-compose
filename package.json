@@ -23,7 +23,7 @@
     "coveralls": "^3.0.2",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "^5.2.0",
-    "qs": "^6.5.2",
+    "qs": "^6.6.0",
     "request-cookie": "0.0.2",
     "request-logs": "0.0.5",
     "request-multipart": "0.0.4",
