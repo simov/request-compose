@@ -1,8 +1,11 @@
 
 # Change Log
 
+## v1.1.1 (2019/01/04)
+- **Fix:** The `extend` method to always return a compose copy
+
 ## v1.1.0 (2018/12/14)
-- **New:** The `buffer` composition now decodes gzipped bodies
+- **Change:** The `buffer` composition now decodes gzipped bodies
 
 ## v1.0.0 (2018/09/21)
 - Public API Freeze
