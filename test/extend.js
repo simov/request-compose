@@ -1,18 +1,7 @@
 
 var t = require('assert')
 var http = require('http')
-var qs = require('qs')
-
-var request1 = require('../').extend({
-  Request: {
-    qs: (_qs) => ({options}) => {
-      options.path += `?${qs.stringify(_qs)}`
-      return {options}
-    }
-  }
-}).client
-
-var request2 = require('../').client
+var compose = require('../')
 
 
 describe('extend', () => {
@@ -26,28 +15,46 @@ describe('extend', () => {
     server.listen(5000, done)
   })
 
-  it('qs.stringify', async () => {
-    var {body} = await request1({
-      url: 'http://localhost:5000',
-      qs: {a: {b: {c: 'd'}}},
-    })
-    t.deepEqual(
-      qs.parse(body),
-      {a: {b: {c: 'd'}}},
-      'should use the overridden qs middleware'
+  it('compose', async () => {
+    var copy = compose.extend({})
+    t.equal(typeof copy, 'function')
+    t.equal(
+      await compose(
+        (a) => a + 2,
+        (a) => a * 2,
+      )(0),
+      4
     )
   })
 
-  it('querystring.stringify', async () => {
-    var {body} = await request2({
-      url: 'http://localhost:5000',
-      qs: {a: {b: {c: 'd'}}},
+  it('extend', async () => {
+    var qs = () => ({options}) => (options.path += '?qs=2', {options})
+    var copy = compose.extend({Request: {qs}})
+
+    var {body} = await compose.client({
+      url: 'http://localhost:5000', qs: {qs: 1}
     })
-    t.deepEqual(
-      qs.parse(body),
-      {a: ''},
-      'should use the default qs middleware'
-    )
+    t.equal(body, 'qs=1')
+
+    var {body} = await copy.client({
+      url: 'http://localhost:5000', qs: {qs: 1}
+    })
+    t.equal(body, 'qs=2')
+  })
+
+  it('deep extend', async () => {
+    var qs = () => ({options}) => (options.path += '?qs=1', {options})
+    var c1 = compose.extend({Request: {qs}})
+    var {body} = await c1.client({url: 'http://localhost:5000', qs: {}})
+    t.equal(body, 'qs=1')
+
+    var qs = () => ({options}) => (options.path += '?qs=2', {options})
+    var c2 = c1.extend({Request: {qs}})
+    var {body} = await c2.client({url: 'http://localhost:5000', qs: {}})
+    t.equal(body, 'qs=2')
+
+    var {body} = await c1.client({url: 'http://localhost:5000', qs: {}})
+    t.equal(body, 'qs=1')
   })
 
   after((done) => server.close(done))

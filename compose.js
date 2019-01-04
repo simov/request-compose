@@ -1,6 +1,8 @@
 
-var compose = (...fns) => (args) =>
+var ctor = () => (...fns) => (args) =>
   fns.reduce((p, f) => p.then(f), Promise.resolve(args))
+
+var compose = ctor()
 
 
 var load = (type, middlewares) => middlewares
@@ -132,20 +134,15 @@ var extend = (mw) => ((
     req = Object.assign({}, Request, mw.Request),
     res = Object.assign({}, Response, mw.Response),
   ) =>
-    Object.assign({}, compose, {
+    Object.assign(ctor(), {
       Request: req,
       Response: res,
       client: client(req, res),
       buffer: buffer(req, res),
       stream: stream(req, res),
+      extend,
     })
   )()
 
 
-compose.Request = Request
-compose.Response = Response
-compose.client = client(Request, Response)
-compose.buffer = buffer(Request, Response)
-compose.stream = stream(Request, Response)
-compose.extend = extend
-module.exports = compose
+module.exports = extend({Request, Response})
