@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v1.2.0 (2019/01/22)
+- **New:** Added `proxy` option
+
 ## v1.1.1 (2019/01/04)
 - **Fix:** The `extend` method to always return a compose copy
 
