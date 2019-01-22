@@ -14,7 +14,8 @@ describe('proxy request', () => {
       proxy = http.createServer()
       proxy.on('request', async (req, res) => {
         var {res:_res} = await request({url: req.url})
-        res.writeHead(_res.statusCode, {..._res.headers, 'x-proxy': true})
+        res.writeHead(_res.statusCode,
+          Object.assign(_res.headers, {'x-proxy': true}))
         res.end()
       })
       proxy.listen(5001, resolve)
@@ -51,7 +52,8 @@ describe('proxy redirect', () => {
       proxy.on('request', async (req, res) => {
         var r = http.request(url.parse(req.url))
         r.on('response', (_res) => {
-          res.writeHead(_res.statusCode, {..._res.headers, 'x-proxy': true})
+          res.writeHead(_res.statusCode,
+            Object.assign(_res.headers, {'x-proxy': true}))
           res.end()
         })
         r.end()
