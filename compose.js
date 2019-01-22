@@ -12,6 +12,7 @@ var load = (type, middlewares) => middlewares
 var Request = load('request', [
   'defaults',
   'url',
+  'proxy',
   'qs',
   'form',
   'json',
@@ -44,6 +45,9 @@ var request = (Request) => (args) => compose(
 
   (() =>
     args.url ? Request.url(args.url) : ({options}) => ({options})
+  )(),
+  (() =>
+    args.proxy ? Request.proxy(args.proxy) : ({options}) => ({options})
   )(),
   (() =>
     args.qs ? Request.qs(args.qs) : ({options}) => ({options})

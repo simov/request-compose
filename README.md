@@ -156,7 +156,7 @@ We can use these middlewares to compose our own HTTP client:
 Type | Middleware | Input | Arguments | Returns
 :--- | :---       | :---  | :---      | :---
 Request | defaults | {input} | {input} | {options}
-Request | url, qs, cookie | see [options](#options) | {options} | {options}
+Request | url, proxy, qs, cookie | see [options](#options) | {options} | {options}
 Request | form, json, multipart, body | see [options](#options) | {options} | {options, body}
 Request | auth, oauth | see [options](#options) | {options, body} | {options, body}
 Request | length | - | {options, body} | {options, body}
@@ -232,6 +232,7 @@ Additionally the following options are available:
 Option     | Type                  | Description
 :--        | :--                   | :--
 `url`      | `'string'` [`url object`][url-parse] | URL _(encoding - see below)_
+`proxy`    | `'string'` [`url object`][url-parse] | Proxy URL
 `qs`       | `{object}` `'string'` | URL querystring _(encoding - see below)_
 `form`     | `{object}` `'string'` | application/x-www-form-urlencoded request body _(encoding - see below)_
 `json`     | `{object}` `'string'` | JSON encoded request body
