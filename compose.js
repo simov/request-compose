@@ -6,7 +6,7 @@ var compose = ctor()
 
 
 var load = (type, middlewares) => middlewares
-  .reduce((all, mw) => (all[mw] = require(`./${type}/${mw}`), all), {})
+  .reduce((all, mw) => (all[mw] = require(`${__dirname}/${type}/${mw}`), all), {})
 
 
 var Request = load('request', [
