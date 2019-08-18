@@ -13,6 +13,8 @@ module.exports = (proxy) => ({options}) => {
     return path
   })()
 
+  options.headers.host = options.hostname
+
   var uri = typeof proxy === 'string' ? url.parse(proxy) : proxy
   options.protocol = uri.protocol
   options.hostname = uri.hostname

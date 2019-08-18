@@ -10,22 +10,31 @@ var Request = {
 describe('proxy', () => {
 
   it('protocol, hostname and path', () => {
-    var options = Request.proxy('https://proxy.com')
-      ({options: Object.assign(url.parse('http://resource.com'))}).options
+    var {protocol, hostname, port, path} = url.parse('http://resource.com')
+    var {options} = Request.proxy('https://proxy.com')
+      ({options: {protocol, hostname, port, path, headers: {}}})
 
-    t.equal(options.protocol, 'https:')
-    t.equal(options.hostname, 'proxy.com')
-    t.equal(options.path, 'http://resource.com/')
+    t.deepEqual(options, {
+      protocol: 'https:',
+      hostname: 'proxy.com',
+      port: null,
+      path: 'http://resource.com/',
+      headers: {host: 'resource.com'}
+    })
   })
 
   it('port', () => {
-    var options = Request.proxy('https://proxy.com:3000')
-      ({options: Object.assign(url.parse('http://resource.com:4000'))}).options
+    var {protocol, hostname, port, path} = url.parse('http://resource.com:4000')
+    var {options} = Request.proxy('https://proxy.com:3000')
+      ({options: {protocol, hostname, port, path, headers: {}}})
 
-    t.equal(options.protocol, 'https:')
-    t.equal(options.hostname, 'proxy.com')
-    t.equal(options.port, 3000)
-    t.equal(options.path, 'http://resource.com:4000/')
+    t.deepEqual(options, {
+      protocol: 'https:',
+      hostname: 'proxy.com',
+      port: '3000',
+      path: 'http://resource.com:4000/',
+      headers: {host: 'resource.com'}
+    })
   })
 
 })
