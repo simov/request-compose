@@ -4,56 +4,62 @@ var http = require('http')
 var cp = require('child_process')
 
 
-var f = {
+var req = {}
+var res = {}
 
-req:
+req.head =
 `req POST http://localhost:5000/
     content-type:   application/json
     content-length: 16
-    Host:           localhost:5000`,
+    Host:           localhost:5000`
 
-reqbody:
+req.body =
 `body
-{"client":"hey"}`,
+{"client":"hey"}`
 
-res:
+req.json =
+`json
+    client: hey`
+
+res.head =
 `res 200 OK
     content-type:      application/json
     date:              noop
     connection:        close
-    transfer-encoding: chunked`,
+    transfer-encoding: chunked`
 
-resbody:
+res.body =
 `body
-{"server":"hi"}`,
+{"server":"hi"}`
 
-json:
+res.json =
 `json
     server: hi`
-}
+
 
 var join = (...fixtures) => fixtures.join('\n') + '\n'
 
 
 var cases = {
 
-  'req,res,body,json': join(f.req, f.reqbody, f.res, f.resbody, f.json),
+  'req,res,body,json': join(
+    req.head, req.body, req.json, res.head, res.body, res.json),
 
-  'req,res,body': join(f.req, f.reqbody, f.res, f.resbody),
+  'req,res,body': join(req.head, req.body, res.head, res.body),
 
-  'req,res,json': join(f.req, f.res, f.json),
+  'req,res,json': join(req.head, req.json, res.head, res.json),
 
-  'req,body': join(f.req, f.reqbody),
+  'req,body': join(req.head, req.body),
 
-  'req,json': join(f.req),
+  'req,json': join(req.head, req.json),
 
-  'res,body': join(f.res, f.resbody),
+  'res,body': join(res.head, res.body),
 
-  'res,json': join(f.res, f.json),
+  'res,json': join(res.head, res.json),
 
-  'req': join(f.req),
+  'req': join(req.head),
 
-  'res': join(f.res),
+  'res': join(res.head),
 
   'body': '',
 
