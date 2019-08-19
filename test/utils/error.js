@@ -26,7 +26,7 @@ describe('error', () => {
     var body = {error: 'message'}
     var raw = JSON.stringify(body)
     t.deepEqual(
-      error({res, body, raw}),
+      JSON.parse(JSON.stringify(error({res, body, raw}))),
       {
         message: '500 Server Error',
         res: {statusCode: 500, statusMessage: 'Server Error'},
@@ -41,7 +41,7 @@ describe('error', () => {
     var res = {statusCode: 500, statusMessage: 'Server Error'}
     var body = 'not ok'
     t.deepEqual(
-      error({res, body}),
+      JSON.parse(JSON.stringify(error({res, body}))),
       {
         message: '500 Server Error',
         res: {statusCode: 500, statusMessage: 'Server Error'},
