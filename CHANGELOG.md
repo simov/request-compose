@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v1.2.1 (2019/08/28)
+- **Fix:** The `proxy` option to set host header
+
 ## v1.2.0 (2019/01/22)
 - **New:** Added `proxy` option
 
