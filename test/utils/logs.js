@@ -73,7 +73,6 @@ var test = (flags) => (done) => {
 
   var output = ''
   cp.spawn('node', [
-    '-r', '../',
     '-e', `
       var request = require('../../').client
       request({
