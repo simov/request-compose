@@ -24,7 +24,7 @@ var options = [
   'pfx',
   'rejectUnauthorized',
   'secureProtocol',
-  'servernam',
+  'servername',
 ]
 
 
