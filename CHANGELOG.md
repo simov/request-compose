@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v1.2.2 (2020/03/01)
+- **Fix:** Support for `request-multipart` middleware
+
 ## v1.2.1 (2019/08/28)
 - **Fix:** The `proxy` option to set host header
 
