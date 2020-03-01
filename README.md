@@ -275,7 +275,7 @@ var request = require('request-compose').extend({
 
 # Errors
 
-Non `200/300` responses are returned as [Error] object with the following properties:
+Non `200/300` responses are thrown as [Error] object with the following properties:
 
 - `message` - status code + status message
 - `res` - the response object
