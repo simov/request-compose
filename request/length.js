@@ -23,6 +23,10 @@ module.exports = () => ({options, options: {headers}, body}) => new Promise((res
     else if (body instanceof Buffer) {
       done(null, body.length)
     }
+    // request-multipart
+    else if (body && body.constructor && body.constructor.name === 'BufferListStream') {
+      done(null, body.length)
+    }
     else if (body instanceof stream.Stream) {
       // fs.ReadStream
       if (body.hasOwnProperty('fd')) {

@@ -102,27 +102,27 @@ describe('length', () => {
         string: 'λ',
         buffer: Buffer.from('λ'),
       })({options: {headers: {}}}).body
-      t.equal(
-        Buffer.from(body._items.join('')).length,
-        Buffer.from([
-          '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda\r\n',
-          'Content-Disposition: form-data; name="string"\r\n',
-          'Content-Type: text/plain\r\n\r\n',
-          'λ',
-          '\r\n',
-          '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda\r\n',
-          '\r\nContent-Disposition: form-data; name="buffer"',
-          'Content-Type: application/octet-stream\r\n\r\n',
-          'λ',
-          '\r\n',
-          '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda--'
-        ].join('')).length,
-        'content-length should equal multipart body length'
-      )
+
+      var items = body._items.join('')
+      var fixture = [
+        '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda\r\n',
+        'Content-Disposition: form-data; name="string"\r\n',
+        'Content-Type: text/plain\r\n\r\n',
+        'λ',
+        '\r\n',
+        '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda\r\n',
+        'Content-Disposition: form-data; name="buffer"\r\n',
+        'Content-Type: application/octet-stream\r\n\r\n',
+        'λ',
+        '\r\n',
+        '--8e3e0676-8acc-4f51-a6b3-a5a89fcdebda--'
+      ].join('')
+
+      t.equal(Buffer.byteLength(items), 292)
+      t.equal(Buffer.byteLength(fixture), 292)
       t.deepStrictEqual(
         (await Request.length()({options, body})).options.headers,
-        {'content-length': Buffer.from(body._items.join('')).length},
-        'content-length should equal file size'
+        {'content-length': 292}
       )
     })
 
