@@ -27,6 +27,10 @@ describe('redirect', () => {
         res.writeHead(301, {location: '/target'})
         res.end(query || 'not ok')
       }
+      else if (/^\/querystring/.test(req.url)) {
+        res.writeHead(301, {location: '/target?b=2'})
+        res.end(query || 'not ok')
+      }
       else if (/^\/target/.test(req.url)) {
         res.writeHead(200,
           query ? {'content-type': 'application/x-www-form-urlencoded'} : {}
@@ -99,6 +103,14 @@ describe('redirect', () => {
       url: 'http://localhost:5000/relative'
     })
     t.equal(body, 'ok', 'should follow relative URLs')
+  })
+
+  it('do not append original request querystring', async () => {
+    var {body} = await request({
+      url: 'http://localhost:5000/querystring',
+      qs: {a: 1}
+    })
+    t.deepEqual(body, {b: 2}, 'should not include original request querystring')
   })
 
   it('stuck in redirect loop', async () => {

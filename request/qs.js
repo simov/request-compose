@@ -2,7 +2,10 @@
 var querystring = require('querystring')
 
 
-module.exports = (qs) => ({options}) => {
+module.exports = (qs, redirect = {}) => ({options}) => {
+  if (redirect.followed) {
+    return {options}
+  }
 
   if (typeof qs === 'object') {
     qs = JSON.parse(JSON.stringify(qs))

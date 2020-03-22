@@ -95,4 +95,12 @@ describe('qs', () => {
     )
   })
 
+  it('skip on redirect', () => {
+    t.equal(
+      Request.qs({a: 1}, {followed: 1})({options: {path: '/?b=2'}}).options.path,
+      '/?b=2',
+      'do not append original request querystring'
+    )
+  })
+
 })

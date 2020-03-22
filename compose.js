@@ -50,7 +50,7 @@ var request = (Request) => (args) => compose(
     args.proxy ? Request.proxy(args.proxy) : ({options}) => ({options})
   )(),
   (() =>
-    args.qs ? Request.qs(args.qs) : ({options}) => ({options})
+    args.qs ? Request.qs(args.qs, args.redirect) : ({options}) => ({options})
   )(),
 
   (() =>
