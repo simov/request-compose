@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v1.2.3 (2020/03/22)
+- **Fix:** Do not append original request querystring on redirect
+
 ## v1.2.2 (2020/03/01)
 - **Fix:** Support for `request-multipart` middleware
 
