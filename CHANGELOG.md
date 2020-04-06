@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v2.0.0 (2020/04/06)
+- **Change:** Drop support for Node 4 and 6
+
 ## v1.2.3 (2020/03/22)
 - **Fix:** Do not append original request querystring on redirect
 
