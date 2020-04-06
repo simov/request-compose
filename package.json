@@ -17,41 +17,32 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "coveralls": "^3.0.9",
-    "istanbul": "1.1.0-alpha.1",
-    "mocha": "^5.2.0",
-    "qs": "^6.9.1",
-    "request-cookie": "0.0.2",
+    "coveralls": "^3.0.11",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "qs": "^6.9.3",
+    "request-cookie": "^1.0.0",
     "request-logs": "^1.0.3",
     "request-multipart": "0.1.0",
-    "request-oauth": "0.0.3"
+    "request-oauth": "^1.0.0"
   },
   "bin": {},
-  "main": "./build/index.js",
+  "main": "./compose.js",
   "files": [
-    "build/request/",
-    "build/response/",
-    "build/utils/",
-    "build/compose.js",
-    "build/index.js",
     "request/",
     "response/",
     "utils/",
     "compose.js",
     "index.js",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "package.json"
   ],
   "scripts": {
     "test": "npm run test:ci",
-    "test:ci": "v=$(node -e \"console.log(process.version.split('.')[0].slice(1))\") && if [ $v -ge 8 ]; then p=\"test\"; else p=\"build/test\"; fi && mocha $p --recursive",
-    "test:cov": "istanbul cover _mocha -- --recursive",
-    "build": "./build.sh",
-    "prepublish": "npm run build"
+    "test:ci": "npx mocha --recursive",
+    "test:cov": "npx nyc --reporter=lcov --reporter=text-summary mocha -- --recursive"
   },
   "engines": {
     "node": ">=8.0.0"
