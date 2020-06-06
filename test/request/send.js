@@ -135,6 +135,109 @@ describe('send', () => {
     }
   })
 
+  describe('proxy from environment', () => {
+    var proxyServer
+
+    before(async () => {
+      await new Promise((resolve) => {
+        proxyServer = http.createServer(credentials)
+        proxyServer.on('request', (req, res) => {
+          t.ok(/https?:\/\/request:8080\//.test(req.url), 'should be absolute URL')
+          res.writeHead(200, 'PROXY')
+          res.end()
+        })
+        proxyServer.listen(5003, resolve)
+      })
+    })
+
+    it('http_proxy', async () => {
+      process.env.http_proxy = 'http://localhost:5003'
+      try {
+        var {res} = await Request.send({
+          options: {
+            protocol: 'http:',
+            hostname: 'request',
+            port: 8080,
+            method: 'GET',
+            path: '/',
+            headers: {},
+            timeout: 5000
+          }
+        })
+        t.equal(res.statusCode, 200)
+        t.equal(res.statusMessage, 'PROXY')
+      } finally {
+        delete process.env.http_proxy
+      }
+    })
+
+    it('HTTP_PROXY', async () => {
+      process.env.HTTP_PROXY = 'http://localhost:5003'
+      try {
+        var {res} = await Request.send({
+          options: {
+            protocol: 'http:',
+            hostname: 'request',
+            port: 8080,
+            method: 'GET',
+            path: '/',
+            headers: {},
+            timeout: 5000
+          }
+        })
+        t.equal(res.statusCode, 200)
+        t.equal(res.statusMessage, 'PROXY')
+      } finally {
+        delete process.env.HTTP_PROXY
+      }
+    })
+
+    it('https_proxy', async () => {
+      process.env.https_proxy = 'http://localhost:5003'
+      try {
+        var {res} = await Request.send({
+          options: {
+            protocol: 'https:',
+            hostname: 'request',
+            port: 8080,
+            method: 'GET',
+            path: '/',
+            headers: {},
+            timeout: 5000
+          }
+        })
+        t.equal(res.statusCode, 200)
+        t.equal(res.statusMessage, 'PROXY')
+      } finally {
+        delete process.env.https_proxy
+      }
+    })
+
+    it('HTTPS_PROXY', async () => {
+      process.env.HTTPS_PROXY = 'http://localhost:5003'
+      try {
+        var {res} = await Request.send({
+          options: {
+            protocol: 'https:',
+            hostname: 'request',
+            port: 8080,
+            method: 'GET',
+            path: '/',
+            headers: {},
+            timeout: 5000
+          }
+        })
+        t.equal(res.statusCode, 200)
+        t.equal(res.statusMessage, 'PROXY')
+      } finally {
+        delete process.env.HTTPS_PROXY
+      }
+    })
+
+    after((done) => proxyServer.close(done))
+
+  })
+
   after((done) => httpServer.close(() => httpsServer.close(done)))
 
 })
