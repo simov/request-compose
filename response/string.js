@@ -7,7 +7,8 @@ module.exports = (encoding) => ({options, res, body, raw}) => {
   raw = body
 
   body = Buffer.from(body).toString(encoding)
-  log({body})
+
+  log({string: {res, body}})
 
   return {options, res, body, raw}
 

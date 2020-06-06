@@ -24,7 +24,7 @@ module.exports = () => ({options, res, res: {headers}, body, raw}) => {
     catch (err) {}
   }
 
-  log({json: body})
+  log({parse: {res, body}})
 
   return {options, res, body, raw}
 
