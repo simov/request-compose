@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v2.1.0 (2020/06/06)
+- **New:** Support for sync `request-logs`
+- **Fix:** Append request path when redirecting to non root relative path
+
 ## v2.0.0 (2020/04/06)
 - **Change:** Drop support for Node 4 and 6
 
