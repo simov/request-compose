@@ -37,7 +37,9 @@ module.exports = (args, client) => ({options, res, body, raw}) => {
     location = url.resolve(
       options.protocol + '//' + options.hostname +
       (options.port && options.port !== 80 ? `:${options.port}` : ''),
-      location
+      location.startsWith('/')
+        ? location
+        : (options.path + `/${location}`).replace(/\/{2,}/g, '/')
     )
   }
 

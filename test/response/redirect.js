@@ -131,6 +131,23 @@ describe('redirect', () => {
     server.removeAllListeners('request')
   })
 
+  it('relative path URL', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'target'})
+        res.end()
+      }
+      else if ('/redirect/target' === req.url) {
+        res.end('ok')
+      }
+    })
+    var {body} = await request({
+      url: 'http://localhost:5000/redirect'
+    })
+    t.equal(body, 'ok', 'should follow relative URLs')
+    server.removeAllListeners('request')
+  })
+
   it('do not append original request querystring', async () => {
     server.on('request', (req, res) => {
       if ('/redirect?a=1' === req.url) {
