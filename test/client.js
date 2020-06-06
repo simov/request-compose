@@ -36,6 +36,20 @@ describe('client', () => {
     t.deepStrictEqual(body, {server: 'hi'})
   })
 
+  it('without url', async () => {
+    var {res, body} = await request({
+      method: 'POST',
+      protocol: 'http:',
+      hostname: 'localhost',
+      port: 5000,
+      path: '',
+      json: {client: 'hey'},
+    })
+    t.equal(res.statusCode, 200)
+    t.equal(res.statusMessage, 'OK')
+    t.deepStrictEqual(body, {server: 'hi'})
+  })
+
   after((done) => server.close(done))
 
 })

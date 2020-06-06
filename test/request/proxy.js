@@ -37,4 +37,18 @@ describe('proxy', () => {
     })
   })
 
+  it('as object', () => {
+    var {protocol, hostname, port, path} = url.parse('http://resource.com')
+    var {options} = Request.proxy({ protocol: 'https:', hostname: 'proxy.com' })
+      ({options: {protocol, hostname, port, path, headers: {}}})
+
+    t.deepEqual(options, {
+      protocol: 'https:',
+      hostname: 'proxy.com',
+      port: null,
+      path: 'http://resource.com/',
+      headers: {host: 'resource.com'}
+    })
+  })
+
 })

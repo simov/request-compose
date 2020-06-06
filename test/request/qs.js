@@ -10,6 +10,22 @@ var Request = {
 
 describe('qs', () => {
 
+  it('undefined', () => {
+    t.equal(
+      Request.qs()({options: {path: '/'}}).options.path,
+      '/',
+      'ignore'
+    )
+  })
+
+  it('undefined + url', () => {
+    t.equal(
+      Request.qs()({options: {path: '/?c=1:2'}}).options.path,
+      '/?c=1:2',
+      'ignore'
+    )
+  })
+
   it('string', () => {
     t.equal(
       Request.qs('a=!(1)&b=2+3')({options: {path: '/'}}).options.path,
@@ -23,6 +39,22 @@ describe('qs', () => {
       Request.qs('a=!(1)&b=2+3')({options: {path: '/?c=1:2'}}).options.path,
       '/?c=1:2&a=!(1)&b=2+3',
       'prepend and do not encode'
+    )
+  })
+
+  it('empty object', () => {
+    t.equal(
+      Request.qs({})({options: {path: '/'}}).options.path,
+      '/',
+      'ignore'
+    )
+  })
+
+  it('empty object + url', () => {
+    t.equal(
+      Request.qs({})({options: {path: '/?b=2:3&c=$5'}}).options.path,
+      '/?b=2%3A3&c=%245',
+      'ignore'
     )
   })
 
