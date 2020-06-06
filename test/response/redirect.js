@@ -2,342 +2,301 @@
 var t = require('assert')
 var http = require('http')
 
-var compose = require('../../')
-compose.Request.oauth = require('request-oauth')
-var request = compose.client
+var request = require('../../').client
 
 
 describe('redirect', () => {
-  var server, server2, counter
+  var server, server2
 
   before((done) => {
     server = http.createServer()
-    server.on('request', (req, res) => {
-      var [_, query] = req.url.split('?')
+    server2 = http.createServer()
+    server.listen(5000, () => server2.listen(5001, done))
+  })
 
-      if (/^\/no-location/.test(req.url)) {
+  after((done) => server.close(() => server2.close(done)))
+
+  it('missing location header', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
         res.writeHead(301)
-        res.end(query || 'not ok')
+        res.end()
       }
-      else if (/^\/absolute/.test(req.url)) {
-        res.writeHead(301, {location: 'http://localhost:5000/target'})
-        res.end(query || 'not ok')
-      }
-      else if (/^\/relative/.test(req.url)) {
-        res.writeHead(301, {location: '/target'})
-        res.end(query || 'not ok')
-      }
-      else if (/^\/querystring/.test(req.url)) {
-        res.writeHead(301, {location: '/target?b=2'})
-        res.end(query || 'not ok')
-      }
-      else if (/^\/target/.test(req.url)) {
-        res.writeHead(200,
-          query ? {'content-type': 'application/x-www-form-urlencoded'} : {}
-        )
-        res.end(query || 'ok')
-      }
-      else if (req.url === '/stuck') {
-        res.writeHead(301, {location: 'http://localhost:5000/stuck'})
-        res.end((++counter).toString())
-      }
-      else if (req.url === '/external') {
-        res.writeHead(301, {location: 'http://127.0.0.1:5001/external'})
+      else if ('/target' === req.url) {
         res.end('ok')
       }
     })
-
-    server2 = http.createServer()
-    server2.on('request', (req, res) => {
-      if (req.url === '/external') {
-        res.writeHead(200)
-        res.end(req.headers.authorization)
-      }
-    })
-
-    server.listen(5000, () => {
-      server2.listen(5001, done)
-    })
-  })
-
-  it('missing location header', async () => {
-    var {res, body} = await request({
-      url: 'http://localhost:5000/no-location'
+    var {res} = await request({
+      url: 'http://localhost:5000/redirect'
     })
     t.strictEqual(res.statusCode, 301)
     t.equal(res.statusMessage, 'Moved Permanently')
-    t.equal(body, 'not ok')
+    server.removeAllListeners('request')
+  })
+
+  it('input options should not be modified', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: '/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
+    var options = {
+      url: 'http://localhost:5000/redirect',
+    }
+    var {body} = await request(options)
+    t.equal(body, 'ok')
+    t.deepEqual(
+      options,
+      {url: 'http://localhost:5000/redirect'},
+      'input options should not be modified'
+    )
+    server.removeAllListeners('request')
   })
 
   it('do not follow patch|put|post|delete redirects', async () => {
-    var {res, body} = await request({
+    server.on('request', (req, res) => {
+      t.equal(req.method, 'POST')
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'http://localhost:5000/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
+    var {res} = await request({
       method: 'POST',
-      url: 'http://localhost:5000/absolute'
+      url: 'http://localhost:5000/redirect'
     })
     t.strictEqual(res.statusCode, 301)
     t.equal(res.statusMessage, 'Moved Permanently')
-    t.equal(body, 'not ok')
+    server.removeAllListeners('request')
   })
 
   it('follow all redirects', async () => {
+    server.on('request', (req, res) => {
+      t.equal(req.method, 'POST')
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'http://localhost:5000/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
     var {res, body} = await request({
       method: 'POST',
-      url: 'http://localhost:5000/absolute',
+      url: 'http://localhost:5000/redirect',
       redirect: {all: true}
     })
-    t.strictEqual(res.statusCode, 200)
-    t.equal(res.statusMessage, 'OK')
-    t.equal(body, 'ok')
-    t.equal(res.req.method, 'POST')
+    t.equal(body, 'ok', 'should follow all redirects')
+    server.removeAllListeners('request')
   })
 
   it('absolute URL', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'http://localhost:5000/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
     var {body} = await request({
-      url: 'http://localhost:5000/absolute'
+      url: 'http://localhost:5000/redirect'
     })
     t.equal(body, 'ok', 'should follow absolute URLs')
+    server.removeAllListeners('request')
   })
 
-  it('relative URL', async () => {
+  it('relative root URL', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: '/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
     var {body} = await request({
-      url: 'http://localhost:5000/relative'
+      url: 'http://localhost:5000/redirect'
     })
     t.equal(body, 'ok', 'should follow relative URLs')
+    server.removeAllListeners('request')
   })
 
   it('do not append original request querystring', async () => {
+    server.on('request', (req, res) => {
+      if ('/redirect?a=1' === req.url) {
+        res.writeHead(301, {location: '/target?b=2'})
+        res.end()
+      }
+      else if ('/target?b=2' === req.url) {
+        res.end('ok')
+      }
+    })
     var {body} = await request({
-      url: 'http://localhost:5000/querystring',
+      url: 'http://localhost:5000/redirect',
       qs: {a: 1}
     })
-    t.deepEqual(body, {b: 2}, 'should not include original request querystring')
+    t.equal(body, 'ok')
+    server.removeAllListeners('request')
   })
 
   it('stuck in redirect loop', async () => {
-    counter = -1
-    var args = {
-      url: 'http://localhost:5000/stuck'
-    }
+    var counter = -1
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        counter++
+        res.writeHead(301, {location: '/redirect'})
+        res.end()
+      }
+    })
     try {
-      await request(args)
+      await request({
+        url: 'http://localhost:5000/redirect'
+      })
     }
     catch (err) {
+      t.equal(counter, 3, 'by default maximum of 3 redirects are allowed')
       t.equal(
         err.message,
         'request-compose: exceeded maximum redirects',
         'throw error on maximum redirects exceeded'
       )
-      t.equal(
-        err.body,
-        '3',
-        'by default maximum of 3 redirects are allowed'
-      )
-      t.deepEqual(
-        args,
-        {url: 'http://localhost:5000/stuck'},
-        'input args should not be modified'
-      )
     }
+    server.removeAllListeners('request')
   })
 
   it('set max redirects to follow', async () => {
-    counter = -1
-    var args = {
-      url: 'http://localhost:5000/stuck',
-      redirect: {max: 5}
-    }
+    var counter = -1
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        counter++
+        res.writeHead(301, {location: '/redirect'})
+        res.end()
+      }
+    })
     try {
-      await request(args)
+      await request({
+        url: 'http://localhost:5000/redirect',
+        redirect: {max: 5}
+      })
     }
     catch (err) {
+      t.equal(counter, 5, 'follow 5 redirects')
       t.equal(
         err.message,
         'request-compose: exceeded maximum redirects',
         'throw error on maximum redirects exceeded'
       )
-      t.equal(
-        err.body,
-        '5',
-        'by default maximum of 3 redirects are allowed'
-      )
-      t.deepEqual(
-        args,
-        {url: 'http://localhost:5000/stuck', redirect: {max: 5}},
-        'input args should not be modified'
-      )
     }
-  })
-
-  it('keep auth option when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      auth: {user: 'user', pass: 'pass'}
-    }
-    var {body} = await request(args)
-    t.ok(
-      /^Basic/.test(body),
-      'should have authorization header'
-    )
-    t.deepEqual(
-      args,
-      {url: 'http://localhost:5000/external', auth: {user: 'user', pass: 'pass'}},
-      'input args should not be modified'
-    )
-  })
-
-  it('keep oauth option when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      oauth: {
-        consumer_key: 'consumer_key',
-        consumer_secret: 'consumer_secret',
-        token: 'token',
-        token_secret: 'token_secret'
-      }
-    }
-    var {body} = await request(args)
-    t.ok(
-      /^OAuth/.test(body),
-      'should have authorization header'
-    )
-    t.deepEqual(
-      args,
-      {
-        url: 'http://localhost:5000/external',
-        oauth: {
-          consumer_key: 'consumer_key',
-          consumer_secret: 'consumer_secret',
-          token: 'token',
-          token_secret: 'token_secret'
-        }
-      },
-      'input args should not be modified'
-    )
+    server.removeAllListeners('request')
   })
 
   it('keep authorization header when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      headers: {authorization: 'Bearer fo'}
-    }
-    var {body} = await request(args)
-    t.ok(
-      /^Bearer/.test(body),
-      'should have authorization header'
-    )
-    t.deepEqual(
-      args,
-      {url: 'http://localhost:5000/external', headers: {authorization: 'Bearer fo'}},
-      'input args should not be modified'
-    )
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'http://127.0.0.1:5001/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
+    server2.on('request', (req, res) => {
+      if (req.url === '/target') {
+        t.equal(
+          req.headers.authorization,
+          'Bearer simov',
+          'should have authorization header'
+        )
+        res.end('ok')
+      }
+    })
+    var {body} = await request({
+      url: 'http://localhost:5000/redirect',
+      headers: {authorization: 'Bearer simov'}
+    })
+    t.equal(body, 'ok')
+    server.removeAllListeners('request')
+    server2.removeAllListeners('request')
   })
 
   it('remove auth options when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      auth: {user: 'user', pass: 'pass'},
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: 'http://127.0.0.1:5001/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        res.end('ok')
+      }
+    })
+    server2.on('request', (req, res) => {
+      if (req.url === '/target') {
+        t.equal(
+          req.headers.authorization,
+          undefined,
+          'should not have authorization header'
+        )
+        res.end('ok')
+      }
+    })
+    var {body} = await request({
+      url: 'http://localhost:5000/redirect',
+      headers: {authorization: 'Bearer simov'},
       redirect: {auth: false}
-    }
-    var {body} = await request(args)
-    t.equal(
-      body,
-      '',
-      'authorization header should be removed'
-    )
-    t.deepEqual(
-      args,
-      {
-        url: 'http://localhost:5000/external',
-        auth: {user: 'user', pass: 'pass'},
-        redirect: {auth: false}
-      },
-      'input args should not be modified'
-    )
-  })
-
-  it('remove oauth option when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      oauth: {
-        consumer_key: 'consumer_key',
-        consumer_secret: 'consumer_secret',
-        token: 'token',
-        token_secret: 'token_secret'
-      },
-      redirect: {auth: false}
-    }
-    var {body} = await request(args)
-    t.equal(
-      body,
-      '',
-      'authorization header should be removed'
-    )
-    t.deepEqual(
-      args,
-      {
-        url: 'http://localhost:5000/external',
-        oauth: {
-          consumer_key: 'consumer_key',
-          consumer_secret: 'consumer_secret',
-          token: 'token',
-          token_secret: 'token_secret'
-        },
-        redirect: {auth: false}
-      },
-      'input args should not be modified'
-    )
-  })
-
-  it('remove authorization header when changing hostnames', async () => {
-    var args = {
-      url: 'http://localhost:5000/external',
-      headers: {authorization: 'Bearer fo'},
-      redirect: {auth: false}
-    }
-    var {body} = await request(args)
-    t.equal(
-      body,
-      '',
-      'authorization header should be removed'
-    )
-    t.deepEqual(
-      args,
-      {
-        url: 'http://localhost:5000/external',
-        headers: {authorization: 'Bearer fo'},
-        redirect: {auth: false}
-      },
-      'input args should not be modified'
-    )
+    })
+    t.equal(body, 'ok')
+    server.removeAllListeners('request')
+    server2.removeAllListeners('request')
   })
 
   it('switch to safe method', async () => {
-    var {res, body} = await request({
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        t.equal(req.method, 'POST')
+        res.writeHead(301, {location: '/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        t.equal(req.method, 'GET')
+        res.end('ok')
+      }
+    })
+    var {body} = await request({
       method: 'POST',
-      url: 'http://localhost:5000/absolute',
+      url: 'http://localhost:5000/redirect',
       redirect: {all: true, method: false},
     })
-    t.strictEqual(res.statusCode, 200)
-    t.equal(res.statusMessage, 'OK')
     t.equal(body, 'ok')
-    t.equal(res.req.method, 'GET')
+    server.removeAllListeners('request')
   })
 
   it('referer', async () => {
-    var {res, body} = await request({
-      url: 'http://localhost:5000/absolute',
+    server.on('request', (req, res) => {
+      if ('/redirect' === req.url) {
+        res.writeHead(301, {location: '/target'})
+        res.end()
+      }
+      else if ('/target' === req.url) {
+        t.equal(req.headers.referer, 'http://localhost:5000/redirect')
+        res.end('ok')
+      }
+    })
+    var {body} = await request({
+      url: 'http://localhost:5000/redirect',
       redirect: {referer: true}
     })
-    t.strictEqual(res.statusCode, 200)
-    t.equal(res.statusMessage, 'OK')
     t.equal(body, 'ok')
-    t.equal(res.req.getHeader('referer'), 'http://localhost:5000/absolute')
-  })
-
-  after((done) => {
-    server.close(() => {
-      server2.close(done)
-    })
+    server.removeAllListeners('request')
   })
 
 })
