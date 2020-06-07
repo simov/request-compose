@@ -336,6 +336,8 @@ HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/reques
 Topic | Example
 :--   | :--
 Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/misc-gzip.js)
+HTTPS proxy | [Tunnel Agent](https://github.com/simov/request-compose/blob/master/examples/misc-tunnel-agent.js)
+HTTPS proxy | [Proxy Agent](https://github.com/simov/request-compose/blob/master/examples/misc-proxy-agent.js)
 Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/misc-extend.js)
 Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/misc-override.js)
 
