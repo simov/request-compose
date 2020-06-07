@@ -42,10 +42,9 @@ module.exports = (_args = {}) => (args = _args) => {
 
   return {
     options: options.reduce((http, option) => (
-      defaults[option] !== undefined ?
-      http[option] = defaults[option] :
-      args[option] !== undefined ?
-      http[option] = args[option] : null,
+      defaults[option] !== undefined ? http[option] = defaults[option] :
+      args[option] !== undefined ? http[option] = args[option] :
+      null,
       http
     ), {})
   }

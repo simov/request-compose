@@ -121,13 +121,13 @@ describe('logs-sync', () => {
     server.on('request', (req, res) => {
       res.writeHead(200, {date: 'noop'})
       if (/1/.test(req.url)) {
-        setTimeout(() => res.end('1'), 500)
+        setTimeout(() => res.end('1'), 300)
       }
       else if (/2/.test(req.url)) {
         setTimeout(() => res.end('2'), 100)
       }
       else if (/3/.test(req.url)) {
-        setTimeout(() => res.end('3'), 300)
+        setTimeout(() => res.end('3'), 200)
       }
     })
     server.listen(5000, done)
