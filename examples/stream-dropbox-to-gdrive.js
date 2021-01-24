@@ -15,13 +15,13 @@ var download = ({token, file}) =>
 var upload = ({token, file, body}) =>
   compose.client({
     method: 'POST',
-    url: 'https://www.googleapis.com/upload/drive/v2/files',
+    url: 'https://www.googleapis.com/upload/drive/v3/files',
     qs: {uploadType: 'multipart'},
     headers: {authorization: `Bearer ${token}`},
     multipart: [
       {
         'Content-Type': 'application/json',
-        body: JSON.stringify({title: file}),
+        body: JSON.stringify({name: file}),
       },
       {
         'Content-Type': 'image/png',
@@ -33,7 +33,7 @@ var upload = ({token, file, body}) =>
 ;(async () => {
   var auth = {
     dropbox: '[ACCESS TOKEN]',
-    grive: '[ACCESS TOKEN]',
+    gdrive: '[ACCESS TOKEN]',
   }
   var file = 'cat.png'
   try {

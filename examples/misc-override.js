@@ -2,13 +2,13 @@
 var compose = require('../')
 var qs = require('qs')
 
-// process-wide override!
+// process-wide override, unless extend was called after that
 compose.Request.form = (form) => ({options, options: {headers}}) => {
   headers['content-type'] = 'application/x-www-form-urlencoded'
   // use qs instead of querystring for nested objects
   return {options, body: qs.stringify(form)}
 }
-// process-wide override!
+// process-wide override, unless extend was called after that
 compose.Response.parse = () => ({options, res, res: {headers}, body, raw}) => {
   var content = Object.keys(headers).find((name) => /content-type/i.test(name))
   if (/application\/x-www-form-urlencoded/.test(headers[content])) {
