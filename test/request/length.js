@@ -126,12 +126,12 @@ describe('length', () => {
       )
     })
 
-    it('request-multipart + knownLength', async () => {
+    it('request-multipart + known length', async () => {
       var options = {headers: {}}
       var body = multipart({
         file: {
-          value: fs.createReadStream(file.binary),
-          options: {knownLength: 5}
+          body: fs.createReadStream(file.binary),
+          options: {length: 5}
         }
       })({options: {headers: {}}}).body
       t.ok(

@@ -23,9 +23,9 @@
     "nyc": "^15.1.0",
     "qs": "^6.9.4",
     "request-cookie": "^1.0.0",
-    "request-logs": "^2.1.0",
-    "request-multipart": "0.1.0",
-    "request-oauth": "^1.0.0"
+    "request-logs": "^2.1.3",
+    "request-multipart": "^1.0.0",
+    "request-oauth": "^1.0.1"
   },
   "bin": {},
   "main": "./compose.js",
