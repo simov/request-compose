@@ -175,6 +175,7 @@ describe('length', () => {
 
     it('fs error', async () => {
       var stream = fs.createReadStream(file.binary)
+      await new Promise((resolve) => setTimeout(resolve))
       stream.path = 'fo'
       var options = {headers: {}}
       var body = stream
@@ -197,6 +198,7 @@ describe('length', () => {
 
     it('multipart size fail', async () => {
       var stream = fs.createReadStream(file.binary)
+      await new Promise((resolve) => setTimeout(resolve))
       stream.path = 'fo'
       var options = {headers: {}}
       var body = multipart({
