@@ -19,8 +19,8 @@ var header =
   '\r\n' +
   'value\r\n' +
   '--XXX\r\n' +
-  'Content-Disposition: form-data; name="file"\r\n' +
-  'Content-Type: application/octet-stream\r\n' +
+  'Content-Disposition: form-data; name="file"; filename="cat.png"\r\n' +
+  'Content-Type: image/png\r\n' +
   '\r\n'
 var footer =
   '\r\n--XXX--'
@@ -56,7 +56,19 @@ describe('multipart', () => {
       headers: {'content-type': 'multipart/form-data; boundary=XXX'},
       multipart: {
         string: 'value',
-        file: fs.readFileSync(file.binary),
+        file: fs.createReadStream(file.binary),
+      }
+    })
+
+    var {body} = await request({
+      url: 'http://localhost:5000',
+      headers: {'content-type': 'multipart/form-data; boundary=XXX'},
+      multipart: {
+        string: 'value',
+        file: {
+          body: fs.readFileSync(file.binary),
+          options: {name: 'cat.png', type: 'image/png'}
+        }
       }
     })
   })
