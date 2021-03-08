@@ -27,7 +27,6 @@
     "request-multipart": "^1.0.0",
     "request-oauth": "^1.0.1"
   },
-  "bin": {},
   "main": "./compose.js",
   "type": "commonjs",
   "files": [
