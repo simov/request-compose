@@ -4,39 +4,34 @@ var ctor = () => (...fns) => (args) =>
 
 var compose = ctor()
 
-
-var load = (type, middlewares) => middlewares
-  .reduce((all, mw) => (all[mw] = require(`./${type}/${mw}`), all), {})
-
-
-var Request = load('request', [
-  'defaults',
-  'url',
-  'proxy',
-  'qs',
-  'form',
-  'json',
-  'body',
-  'auth',
-  'length',
-  'send',
-])
+var Request = {
+  'defaults': require('./request/defaults'),
+  'url': require('./request/url'),
+  'proxy': require('./request/proxy'),
+  'qs': require('./request/qs'),
+  'form': require('./request/form'),
+  'json': require('./request/json'),
+  'body': require('./request/body'),
+  'auth': require('./request/auth'),
+  'length': require('./request/length'),
+  'send': require('./request/send'),
+}
 
 
-var Response = load('response', [
-  'buffer',
-  'gzip',
-  'string',
-  'parse',
-  'status',
-  'redirect',
-])
+var Response = {
+  'buffer': require('./response/buffer'),
+  'gzip': require('./response/gzip'),
+  'string': require('./response/string'),
+  'parse': require('./response/parse'),
+  'status': require('./response/status'),
+  'redirect': require('./response/redirect'),
+}
 
 
-var utils = load('utils', [
-  'error',
-  'log',
-])
+var utils = {
+  'error': require('./utils/error'),
+  'log': require('./utils/log'),
+}
 
 
 var request = (Request) => (args) => compose(
