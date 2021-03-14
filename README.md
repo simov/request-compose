@@ -239,7 +239,7 @@ Option     | Type                  | Description
 `multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#external-middlewares)
 `body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | request body
 `auth`     | `{user, pass}`        | Basic authorization
-`oauth`    | `{object}` | OAuth authorization using [request-oauth], see [examples](#external-middlewares)
+`oauth`    | `{object}` | OAuth 1.0a authorization using [request-oauth], see [examples](#external-middlewares)
 `encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
 `cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#external-middlewares)
 `redirect` | `{object}` | _see below_
@@ -354,6 +354,7 @@ Topic | Example
 :--   | :--
 Google Chrome Web Store HTTP Client | [chrome-webstore]
 wallhaven.cc HTTP Client | [wallhaven-client]
+REST API Client Library | [purest]
 
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Package Version)
@@ -386,8 +387,8 @@ wallhaven.cc HTTP Client | [wallhaven-client]
   [buffer-encoding]: https://nodejs.org/dist/latest-v10.x/docs/api/buffer.html#buffer_buffers_and_character_encodings
   [stream-readable]: https://nodejs.org/dist/latest-v10.x/docs/api/stream.html#stream_class_stream_readable
   [stream-incoming-message]: https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_class_http_incomingmessage
-  [http-request]: https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_http_request_options_callback
-  [https-request]: https://nodejs.org/dist/latest-v10.x/docs/api/https.html#https_https_request_options_callback
+  [http-request]: https://nodejs.org/dist/latest-v14.x/docs/api/http.html#http_http_request_options_callback
+  [https-request]: https://nodejs.org/dist/latest-v14.x/docs/api/https.html#https_https_request_options_callback
   [url-parse]: https://nodejs.org/dist/latest-v10.x/docs/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
   [querystring-parse]: https://nodejs.org/dist/latest-v10.x/docs/api/querystring.html#querystring_querystring_parse_str_sep_eq_options
   [querystring]: https://nodejs.org/dist/latest-v10.x/docs/api/querystring.html
@@ -396,3 +397,4 @@ wallhaven.cc HTTP Client | [wallhaven-client]
 
   [chrome-webstore]: https://github.com/simov/chrome-webstore
   [wallhaven-client]: https://github.com/simov/wallhaven-client
+  [purest]: https://github.com/simov/purest
