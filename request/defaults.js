@@ -1,30 +1,43 @@
 
 var options = [
-  // https://nodejs.org/dist/latest-v9.x/docs/api/http.html#http_http_request_options_callback
-  'protocol',
-  'hostname',
+  // https://nodejs.org/dist/latest-v14.x/docs/api/http.html#http_http_request_options_callback
+  'agent',
+  'auth',
+  'createConnection',
+  'defaultPort',
   'family',
-  'port',
+  'headers',
+  'host',
+  'hostname',
+  'insecureHTTPParser',
   'localAddress',
-  'socketPath',
+  'lookup',
+  'maxHeaderSize',
   'method',
   'path',
-  'headers',
-  'auth',
-  'agent',
-  'createConnection',
+  'port',
+  'protocol',
+  'setHost',
+  'socketPath',
   'timeout',
-  // https://nodejs.org/dist/latest-v9.x/docs/api/https.html#https_https_request_options_callback
+  // https://nodejs.org/dist/latest-v14.x/docs/api/https.html#https_https_request_options_callback
   'ca',
   'cert',
   'ciphers',
   'clientCertEngine',
+  'crl',
+  'dhparam',
+  'ecdhCurve',
+  'honorCipherOrder',
   'key',
   'passphrase',
   'pfx',
   'rejectUnauthorized',
+  'secureOptions',
   'secureProtocol',
   'servername',
+  'sessionIdContext',
+  'highWaterMark',
 ]
 
 
