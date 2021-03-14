@@ -35,12 +35,14 @@
     "response/",
     "utils/",
     "compose.js",
+    "compose.d.ts",
     "index.js",
     "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "package.json"
   ],
+  "types": "compose.d.ts",
   "scripts": {
     "test": "npm run test:ci",
     "test:ci": "npx mocha --recursive",
