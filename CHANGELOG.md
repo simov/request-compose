@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v2.1.1 (2021/03/14)
+- **New:** Type definitions for TypeScript
+
 ## v2.1.0 (2020/06/06)
 - **New:** Support for sync `request-logs`
 - **Fix:** Append request path when redirecting to non root relative path
