@@ -4,33 +4,28 @@ var ctor = () => (...fns) => (args) =>
 
 var compose = ctor()
 
+
 var Request = {
-  'defaults': require('./request/defaults'),
-  'url': require('./request/url'),
-  'proxy': require('./request/proxy'),
-  'qs': require('./request/qs'),
-  'form': require('./request/form'),
-  'json': require('./request/json'),
-  'body': require('./request/body'),
-  'auth': require('./request/auth'),
-  'length': require('./request/length'),
-  'send': require('./request/send'),
+  defaults: require('./request/defaults'),
+  url: require('./request/url'),
+  proxy: require('./request/proxy'),
+  qs: require('./request/qs'),
+  form: require('./request/form'),
+  json: require('./request/json'),
+  body: require('./request/body'),
+  auth: require('./request/auth'),
+  length: require('./request/length'),
+  send: require('./request/send'),
 }
 
 
 var Response = {
-  'buffer': require('./response/buffer'),
-  'gzip': require('./response/gzip'),
-  'string': require('./response/string'),
-  'parse': require('./response/parse'),
-  'status': require('./response/status'),
-  'redirect': require('./response/redirect'),
-}
-
-
-var utils = {
-  'error': require('./utils/error'),
-  'log': require('./utils/log'),
+  buffer: require('./response/buffer'),
+  gzip: require('./response/gzip'),
+  string: require('./response/string'),
+  parse: require('./response/parse'),
+  status: require('./response/status'),
+  redirect: require('./response/redirect'),
 }
 
 
