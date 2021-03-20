@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v2.1.2 (2021/03/20)
+- **Fix:** Better support for JavaScript bundlers
+
 ## v2.1.1 (2021/03/14)
 - **New:** Type definitions for TypeScript
 
