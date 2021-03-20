@@ -613,7 +613,7 @@ declare module compose {
   /**
    * Extend instance
    */
-  export function extend (options: ExtendMiddlewares): compose /*FIX*/
+  export function extend (options: ExtendMiddlewares): any /*FIX*/
 }
 
 export default compose
