@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import '@types/node'
-import * as http from 'node:http'
-import * as https from 'node:https'
-import * as stream from 'node:stream'
+import * as http from 'http'
+import * as https from 'https'
+import * as stream from 'stream'
 
 // ----------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ interface NodeCoreHttpOptions {
   /**
    * Agent
    */
-  agent?: undefined | boolean | https.Agent | http.Agent
+  agent?: boolean | https.Agent | http.Agent
   /**
    * Basic authentication
    */
@@ -584,36 +584,36 @@ export interface StreamResponse {
 /**
  * Functional composition
  */
-declare function compose (functions?: any): (options?: any) => Promise<any>
+declare function compose(...functions: any): (options?: any) => Promise<any>
 
 /**
  * Functional composition
  */
-declare module compose {
+declare namespace compose {
   /**
    * Request middlewares
    */
-  export const Request: RequestMiddlewares
+  const Request: RequestMiddlewares
   /**
    * Response middlewares
    */
-  export const Response: ResponseMiddlewares
+  const Response: ResponseMiddlewares
   /**
    * Client composition
    */
-  export function client (options: RequestOptions): Promise<ClientResponse>
+  function client(options: RequestOptions): Promise<ClientResponse>
   /**
    * Buffer composition
    */
-  export function buffer (options: RequestOptions): Promise<BufferResponse>
+  function buffer(options: RequestOptions): Promise<BufferResponse>
   /**
    * Stream composition
    */
-  export function stream (options: RequestOptions): Promise<StreamResponse>
+  function stream(options: RequestOptions): Promise<StreamResponse>
   /**
    * Extend instance
    */
-  export function extend (options: ExtendMiddlewares): any /*FIX*/
+  function extend(options: ExtendMiddlewares): typeof compose
 }
 
 export default compose
