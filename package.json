@@ -18,8 +18,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "coveralls": "^3.1.0",
-    "mocha": "^8.4.0",
+    "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "qs": "^6.9.4",
     "request-cookie": "^1.0.0",
