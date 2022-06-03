@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import '@types/node'
+
 import * as http from 'http'
 import * as https from 'https'
 import * as stream from 'stream'
