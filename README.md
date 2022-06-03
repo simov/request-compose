@@ -1,7 +1,7 @@
 
 # request-compose
 
-[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
+[![npm-version]][npm] [![test-ci-img]][test-ci-url] [![test-cov-img]][test-cov-url] [![snyk-vulnerabilities]][snyk]
 
 > _Composable HTTP Client_
 
@@ -357,15 +357,15 @@ wallhaven.cc HTTP Client | [wallhaven-client]
 REST API Client Library | [purest]
 
 
-  [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Package Version)
-  [travis-ci]: https://img.shields.io/travis/simov/request-compose/master.svg?style=flat-square (Build Status - Travis CI)
-  [coveralls-status]: https://img.shields.io/coveralls/simov/request-compose.svg?style=flat-square (Test Coverage - Coveralls)
-  [codecov-status]: https://img.shields.io/codecov/c/github/simov/request-compose.svg?style=flat-square (Test Coverage - Codecov)
+  [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Version)
+  [test-ci-img]: https://img.shields.io/travis/simov/request-compose/master.svg?style=flat-square (Build Status)
+  [test-cov-img]: https://img.shields.io/coveralls/simov/request-compose.svg?style=flat-square (Test Coverage)
+  [snyk-vulnerabilities]: https://img.shields.io/snyk/vulnerabilities/npm/request-compose.svg?style=flat-square (Vulnerabilities)
 
   [npm]: https://www.npmjs.com/package/request-compose
-  [travis]: https://travis-ci.org/simov/request-compose
-  [coveralls]: https://coveralls.io/github/simov/request-compose
-  [codecov]: https://codecov.io/github/simov/request-compose?branch=master
+  [test-ci-url]: https://github.com/simov/request-compose/actions/workflows/test.yml
+  [test-cov-url]: https://coveralls.io/r/simov/request-compose?branch=master
+  [snyk]: https://snyk.io/test/npm/request-compose
 
   [function-composition]: https://en.wikipedia.org/wiki/Function_composition_(computer_science)
   [pipeline]: https://en.wikipedia.org/wiki/Pipeline_(software)
