@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v2.1.5 (2022/06/03)
+- **Fix:** Type definitions for TypeScript
+
 ## v2.1.4 (2021/05/09)
 - **Fix:** Type definitions for TypeScript
 
