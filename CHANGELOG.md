@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v2.1.6 (2022/12/22)
+- **Change:** Update deps and docs
+
 ## v2.1.5 (2022/06/03)
 - **Fix:** Type definitions for TypeScript
 
