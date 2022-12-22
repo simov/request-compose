@@ -153,19 +153,19 @@ We can use these middlewares to compose our own HTTP client:
 })()
 ```
 
-Type | Middleware | Input | Arguments | Returns
-:--- | :---       | :---  | :---      | :---
-Request | defaults | {input} | {input} | {options}
-Request | url, proxy, qs, cookie | see [options](#options) | {options} | {options}
-Request | form, json, multipart, body | see [options](#options) | {options} | {options, body}
-Request | auth, oauth | see [options](#options) | {options, body} | {options, body}
-Request | length | - | {options, body} | {options, body}
-Request | send | - | {options, body} | {options, res}
-Response | buffer | - | {options, res} | {options, res, body}
-Response | gzip | - | {options, res, body, raw} | {options, res, body, raw}
-Response | string | see [options](#options) | {options, res, body, raw} | {options, res, body, raw}
-Response | parse, status | - | {options, res, body, raw} | {options, res, body, raw}
-Response | redirect | (input, client) | {options, res, body, raw} | new composition
+| Type | Middleware | Input | Arguments | Returns
+| :--- | :---       | :---  | :---      | :---
+| Request | defaults | {input} | {input} | {options}
+| Request | url, proxy, qs, cookie | see [options](#options) | {options} | {options}
+| Request | form, json, multipart, body | see [options](#options) | {options} | {options, body}
+| Request | auth, oauth | see [options](#options) | {options, body} | {options, body}
+| Request | length | - | {options, body} | {options, body}
+| Request | send | - | {options, body} | {options, res}
+| Response | buffer | - | {options, res} | {options, res, body}
+| Response | gzip | - | {options, res, body, raw} | {options, res, body, raw}
+| Response | string | see [options](#options) | {options, res, body, raw} | {options, res, body, raw}
+| Response | parse, status | - | {options, res, body, raw} | {options, res, body, raw}
+| Response | redirect | (input, client) | {options, res, body, raw} | new composition
 
 
 # Opinionated Client
@@ -229,20 +229,20 @@ var {res, body} = await request({
 
 Additionally the following options are available:
 
-Option     | Type                  | Description
-:--        | :--                   | :--
-`url`      | `'string'` [`url object`][url-parse] | URL _(encoding - see below)_
-`proxy`    | `'string'` [`url object`][url-parse] | Proxy URL
-`qs`       | `{object}` `'string'` | URL querystring _(encoding - see below)_
-`form`     | `{object}` `'string'` | application/x-www-form-urlencoded request body _(encoding - see below)_
-`json`     | `{object}` `'string'` | JSON encoded request body
-`multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#external-middlewares)
-`body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | request body
-`auth`     | `{user, pass}`        | Basic authorization
-`oauth`    | `{object}` | OAuth 1.0a authorization using [request-oauth], see [examples](#external-middlewares)
-`encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
-`cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#external-middlewares)
-`redirect` | `{object}` | _see below_
+| Option     | Type                  | Description
+| :--        | :--                   | :--
+| `url`      | `'string'` [`url object`][url-parse] | URL _(encoding - see below)_
+| `proxy`    | `'string'` [`url object`][url-parse] | Proxy URL
+| `qs`       | `{object}` `'string'` | URL querystring _(encoding - see below)_
+| `form`     | `{object}` `'string'` | application/x-www-form-urlencoded request body _(encoding - see below)_
+| `json`     | `{object}` `'string'` | JSON encoded request body
+| `multipart`| `{object}` `[array]`  | multipart request body using [request-multipart], see [examples](#external-middlewares)
+| `body`     | `'string'` [`Buffer`][buffer] [`Stream`][stream-readable] | request body
+| `auth`     | `{user, pass}`        | Basic authorization
+| `oauth`    | `{object}` | OAuth 1.0a authorization using [request-oauth], see [examples](#external-middlewares)
+| `encoding` | [`'string'`][buffer-encoding] | response body encoding _(default: 'utf8')_
+| `cookie`   | `{object}` | cookie store using [request-cookie], see [examples](#external-middlewares)
+| `redirect` | `{object}` | _see below_
 
 > Querystring set in the `url`, and/or in `qs` and/or in `form` as _'string'_ is left untouched, meaning that the proper encoding is left to the user.
 
@@ -250,13 +250,13 @@ Option     | Type                  | Description
 
 #### redirect
 
-Option    | Default | Description
-:--       | :--     | :--
-`max`     | *3*     | maximum number of redirects to follow
-`all`     | *false* | follow non-GET HTTP 3xx responses as redirects
-`method`  | *true*  | follow original HTTP method, otherwise convert all redirects to GET
-`auth`    | *true*  | keep Authorization header when changing hostnames
-`referer` | *false* | add Referer header
+| Option    | Default | Description
+| :--       | :--     | :--
+| `max`     | *3*     | maximum number of redirects to follow
+| `all`     | *false* | follow non-GET HTTP 3xx responses as redirects
+| `method`  | *true*  | follow original HTTP method, otherwise convert all redirects to GET
+| `auth`    | *true*  | keep Authorization header when changing hostnames
+| `referer` | *false* | add Referer header
 
 ## extend
 
@@ -299,62 +299,36 @@ DEBUG=req,res,body,json,nocolor node app.js
 
 # Examples
 
-## Basics
-
-Topic | Example
-:--   | :--
-Types of lambda functions | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-lambda.js)
-Bundled middlewares | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-middlewares.js)
-Wrap it up and extend it | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-extend.js)
-
-## Compositions
-
-Topic | Example
-:--   | :--
-Client | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/compose-client.js)
-Buffer | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/compose-buffer.js)
-Stream | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/compose-stream.js)
-
-## External Middlewares
-
-Topic | Example
-:--   | :--
-OAuth ([request-oauth]) | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/mw-oauth.js)
-Multipart ([request-multipart]) | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/mw-multipart.js)
-Cookie ([request-cookie]) | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/mw-cookie.js)
-
-## Stream
-
-Topic | Example
-:--   | :--
-Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-upload.js)
-HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-slack.js)
-HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-gdrive.js)
-
-## Misc
-
-Topic | Example
-:--   | :--
-Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/misc-gzip.js)
-HTTPS proxy | [Tunnel Agent](https://github.com/simov/request-compose/blob/master/examples/misc-tunnel-agent.js)
-HTTPS proxy | [Proxy Agent](https://github.com/simov/request-compose/blob/master/examples/misc-proxy-agent.js)
-Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/misc-extend.js)
-Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/misc-override.js)
-
-## Pipeline
-
-Topic | Example
-:--   | :--
-App pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/pipe-slack-weather-status.js)
-App pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/pipe-repo-search.js)
-
-## Modules
-
-Topic | Example
-:--   | :--
-Google Chrome Web Store HTTP Client | [chrome-webstore]
-wallhaven.cc HTTP Client | [wallhaven-client]
-REST API Client Library | [purest]
+| Topic | Example
+| :--   | :--
+| **`Basics`** |
+| Types of lambda functions | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-lambda.js)
+| Bundled middlewares | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-middlewares.js)
+| Wrap it up and extend it | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/basic-extend.js)
+| **`Compositions`** |
+| Client | [Get GitHub user profile](https://github.com/simov/request-compose/blob/master/examples/compose-client.js)
+| Buffer | [Decoding response body using iconv-lite](https://github.com/simov/request-compose/blob/master/examples/compose-buffer.js)
+| Stream | [Stream Tweets](https://github.com/simov/request-compose/blob/master/examples/compose-stream.js)
+| **`External Middlewares`** |
+| OAuth ([request-oauth]) | [Get Twitter User Profile](https://github.com/simov/request-compose/blob/master/examples/mw-oauth.js)
+| Multipart ([request-multipart]) | [Upload photo to Twitter](https://github.com/simov/request-compose/blob/master/examples/mw-multipart.js)
+| Cookie ([request-cookie]) | [Login to Wallhaven.cc](https://github.com/simov/request-compose/blob/master/examples/mw-cookie.js)
+| **`Stream`** |
+| Stream request body | [Upload file to Dropbox](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-upload.js)
+| HTTP stream | [Upload image from Dropbox to Slack](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-slack.js)
+| HTTP stream | [Copy file from Dropbox to GDrive](https://github.com/simov/request-compose/blob/master/examples/stream-dropbox-to-gdrive.js)
+| **`Misc`** |
+| Gzip decompression | [Request Gzip compressed body](https://github.com/simov/request-compose/blob/master/examples/misc-gzip.js)
+| HTTPS proxy | [Tunnel Agent](https://github.com/simov/request-compose/blob/master/examples/misc-tunnel-agent.js)
+| HTTPS proxy | [Proxy Agent](https://github.com/simov/request-compose/blob/master/examples/misc-proxy-agent.js)
+| Override bundled middleware - per compose instance | [Override the `qs` middleware](https://github.com/simov/request-compose/blob/master/examples/misc-extend.js)
+| Override bundled middleware - process-wide | [Override the `form` and the `parse` middlewares to use the `qs` module](https://github.com/simov/request-compose/blob/master/examples/misc-override.js)
+| **`Pipeline`** |
+| App pipeline | [Slack Weather Status](https://github.com/simov/request-compose/blob/master/examples/pipe-slack-weather-status.js)
+| App pipeline | [Simultaneously search for repos in GitHub, GitLab and BitBucket](https://github.com/simov/request-compose/blob/master/examples/pipe-repo-search.js)
+| **`Modules`** |
+| Google Chrome Web Store HTTP Client | [chrome-webstore]
+| REST API Client Library | [purest]
 
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Version)
@@ -396,5 +370,4 @@ REST API Client Library | [purest]
   [reserved-characters]: https://en.wikipedia.org/wiki/Percent-encoding#Types_of_URI_characters
 
   [chrome-webstore]: https://github.com/simov/chrome-webstore
-  [wallhaven-client]: https://github.com/simov/wallhaven-client
   [purest]: https://github.com/simov/purest
