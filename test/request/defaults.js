@@ -58,18 +58,8 @@ describe('defaults', () => {
     )
   })
 
-  it('should accept string `auth`', () => {
-    var args = {
-      auth: 'auth'
-    }
-    t.equal(
-      Request.defaults(args)().options.auth,
-      'auth',
-      'should include `auth`'
-    )
-  })
 
-  it('should not accept `auth` if it is not a string', () => {
+  it('should not accept `auth`', () => {
     var args = {
       auth: { user: 'user', pass: 'pass' }
     }

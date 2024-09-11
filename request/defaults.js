@@ -2,7 +2,8 @@
 var options = [
   // https://nodejs.org/dist/latest-v14.x/docs/api/http.html#http_http_request_options_callback
   'agent',
-  'auth',
+  // conflicts with our `auth` option and handled in auth.js
+  // 'auth',
   'createConnection',
   'defaultPort',
   'family',
@@ -40,13 +41,6 @@ var options = [
   'highWaterMark',
 ]
 
-var isValid = (option, value) => {
-  if (option === 'auth') {
-    return typeof value === 'string'
-  } 
-  return true
-}
-
 
 module.exports = (_args = {}) => (args = _args) => {
 
@@ -61,12 +55,11 @@ module.exports = (_args = {}) => (args = _args) => {
   }
 
   return {
-    options: options.reduce((http, option) => {
-      var value = defaults[option] ?? args[option]
-      if (value !== undefined && isValid(option, value)) {
-        http[option] = value
-      }
-      return http
-    }, {})
+    options: options.reduce((http, option) => (
+      defaults[option] !== undefined ? http[option] = defaults[option] :
+      args[option] !== undefined ? http[option] = args[option] :
+      null,
+      http
+    ), {})
   }
 }
