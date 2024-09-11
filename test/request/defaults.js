@@ -58,6 +58,28 @@ describe('defaults', () => {
     )
   })
 
+  it('should accept string `auth`', () => {
+    var args = {
+      auth: 'auth'
+    }
+    t.equal(
+      Request.defaults(args)().options.auth,
+      'auth',
+      'should include `auth`'
+    )
+  })
+
+  it('should not accept `auth` if it is not a string', () => {
+    var args = {
+      auth: { user: 'user', pass: 'pass' }
+    }
+    t.equal(
+      Request.defaults(args)().options.auth,
+      undefined,
+      'should not include none string auth'
+    )
+  })
+
   it('filter out non http.request options', () => {
     t.equal(
       Request.defaults()().options.json,

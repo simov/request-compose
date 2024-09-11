@@ -40,6 +40,13 @@ var options = [
   'highWaterMark',
 ]
 
+var isValid = (option, value) => {
+  if (option === 'auth') {
+    return typeof value === 'string'
+  } 
+  return true
+}
+
 
 module.exports = (_args = {}) => (args = _args) => {
 
@@ -54,11 +61,12 @@ module.exports = (_args = {}) => (args = _args) => {
   }
 
   return {
-    options: options.reduce((http, option) => (
-      defaults[option] !== undefined ? http[option] = defaults[option] :
-      args[option] !== undefined ? http[option] = args[option] :
-      null,
-      http
-    ), {})
+    options: options.reduce((http, option) => {
+      var value = defaults[option] ?? args[option]
+      if (value !== undefined && isValid(option, value)) {
+        http[option] = value
+      }
+      return http
+    }, {})
   }
 }
