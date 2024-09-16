@@ -1,8 +1,11 @@
 
-module.exports = ({user, pass}) => ({options, options: {headers}, body}) => {
+module.exports = (auth) => ({options, options: {headers}, body}) => {
 
-  headers.Authorization =
-    `Basic ${Buffer.from(`${user}:${pass || ''}`, 'utf8').toString('base64')}`
+  if (typeof auth === 'object') {
+    headers.Authorization =
+      `Basic ${Buffer.from(`${auth.user}:${auth.pass || ''}`, 'utf8').toString('base64')}`
+    delete options.auth
+  }
 
   return {options, body}
 }
