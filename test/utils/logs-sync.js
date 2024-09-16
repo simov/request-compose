@@ -4,6 +4,18 @@ var http = require('http')
 var cp = require('child_process')
 
 
+var res = parseInt(/v(\d{2})/.exec(process.version)[1]) <= 18 ?
+`res 200 OK
+    date:              noop
+    connection:        close
+    transfer-encoding: chunked`
+:
+`res 200 OK
+    date:              noop
+    connection:        keep-alive
+    keep-alive:        timeout=5
+    transfer-encoding: chunked`
+
 var defaults =
 `req POST http://localhost:5000/1
     content-length: 1
@@ -20,22 +32,13 @@ req POST http://localhost:5000/3
     Host:           localhost:5000
 body
 c
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 2
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 3
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 1
 `
@@ -46,10 +49,7 @@ var sync =
     Host:           localhost:5000
 body
 b
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 2
 req POST http://localhost:5000/3
@@ -57,10 +57,7 @@ req POST http://localhost:5000/3
     Host:           localhost:5000
 body
 c
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 3
 req POST http://localhost:5000/1
@@ -68,10 +65,7 @@ req POST http://localhost:5000/1
     Host:           localhost:5000
 body
 a
-res 200 OK
-    date:              noop
-    connection:        close
-    transfer-encoding: chunked
+${res}
 body
 1
 `

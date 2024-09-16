@@ -21,11 +21,18 @@ req.json =
 `json
     client: hey`
 
-res.head =
+res.head = parseInt(/v(\d{2})/.exec(process.version)[1]) <= 18 ?
 `res 200 OK
     content-type:      application/json
     date:              noop
     connection:        close
+    transfer-encoding: chunked`
+:
+`res 200 OK
+    content-type:      application/json
+    date:              noop
+    connection:        keep-alive
+    keep-alive:        timeout=5
     transfer-encoding: chunked`
 
 res.body =
