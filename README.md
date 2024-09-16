@@ -332,9 +332,9 @@ DEBUG=req,res,body,json,nocolor node app.js
 
 
   [npm-version]: https://img.shields.io/npm/v/request-compose.svg?style=flat-square (NPM Version)
-  [test-ci-img]: https://img.shields.io/travis/simov/request-compose/master.svg?style=flat-square (Build Status)
+  [test-ci-img]: https://img.shields.io/github/actions/workflow/status/simov/request-compose/test.yml?style=flat-square (Build Status)
   [test-cov-img]: https://img.shields.io/coveralls/simov/request-compose.svg?style=flat-square (Test Coverage)
-  [snyk-vulnerabilities]: https://img.shields.io/snyk/vulnerabilities/npm/request-compose.svg?style=flat-square (Vulnerabilities)
+  [snyk-vulnerabilities]: https://img.shields.io/badge/vulnerabilities-0-geen?style=flat-square (Vulnerabilities)
 
   [npm]: https://www.npmjs.com/package/request-compose
   [test-ci-url]: https://github.com/simov/request-compose/actions/workflows/test.yml
